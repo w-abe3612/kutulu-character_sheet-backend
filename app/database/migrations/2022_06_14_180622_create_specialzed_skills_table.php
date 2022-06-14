@@ -15,6 +15,23 @@ class CreateSpecialzedSkillsTable extends Migration
     {
         Schema::create('specialzed_skills', function (Blueprint $table) {
             $table->id();
+            //character_info_id
+            //ユーザーID
+            $table->unsignedBigInteger('character_info_id');
+            $table->foreign('character_info_id')->references('id')->on('character_infos');
+
+            //ユーザーID
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
+            //スキル名
+            $table->string('skill_name',255 )->default('');
+            //パラメーター名
+            $table->string('skill_param',255 )->default('');
+            //スキル値
+            $table->integer('skill_value')->default(0);
+            //並び順
+            $table->integer('skill_order')->default(0);
             $table->timestamps();
         });
     }
