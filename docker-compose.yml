@@ -11,10 +11,10 @@ services:
   db:
     image: mysql:5.7
     environment:
-      - MYSQL_DATABASE= ${D_ATABASE}
+      - MYSQL_DATABASE=${D_ATABASE}
       - MYSQL_USER=${U_SERNAME}
       - MYSQL_PASSWORD=${U_SERPASS}
-      - MYSQL_ROOT_PASSWORD= ${R_OOTPASS}
+      - MYSQL_ROOT_PASSWORD=${R_OOTPASS}
       - TZ=Asia/Tokyo
     ports:
       - 3306:3306
@@ -22,10 +22,10 @@ services:
   test-db:
     image: mysql:5.7
     environment:
-      - MYSQL_DATABASE= ${DATA_BASE}
+      - MYSQL_DATABASE=${DATA_BASE}
       - MYSQL_USER=${USER_NAME}
       - MYSQL_PASSWORD=${USER_PASS}
-      - MYSQL_ROOT_PASSWORD= ${ROOT_PASS}
+      - MYSQL_ROOT_PASSWORD=${ROOT_PASS}
       - TZ=Asia/Tokyo
     ports:
       - '3307:3306'
