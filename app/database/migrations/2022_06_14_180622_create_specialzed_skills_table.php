@@ -15,8 +15,8 @@ class CreateSpecialzedSkillsTable extends Migration
     {
         Schema::create('specialzed_skills', function (Blueprint $table) {
             $table->id();
-            //character_info_id
-            //ユーザーID
+
+            //キャラクターID
             $table->unsignedBigInteger('character_info_id');
             $table->foreign('character_info_id')->references('id')->on('character_infos');
 

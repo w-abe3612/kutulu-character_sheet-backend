@@ -26,6 +26,8 @@ class CreateFlavorInfosTable extends Migration
 
             //フレイバー情報名	
             $table->string('flavor_info_name',255 )->default('');
+            //フレイバー情報値名
+            $table->string('flavor_info_param',255 )->default('');
             //フレイバー情報内容
             $table->string('flavor_info_value',255 )->default('');
             //フレイバー情報 並び順

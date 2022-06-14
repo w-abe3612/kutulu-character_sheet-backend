@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AbilityValuesFactory extends Factory
 {
+
     /**
      * Define the model's default state.
      *
@@ -18,3 +19,5 @@ class AbilityValuesFactory extends Factory
         ];
     }
 }
+
+
