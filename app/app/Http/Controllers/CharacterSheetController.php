@@ -41,23 +41,17 @@ class CharacterSheetController extends Controller
      */
     public function show($id)
     {
-/*
-        CharacterInfos::where('id','=',$id);
-        FlavorInfos::where('character_info_id','=',$id);
-        SpecialzedSkills::where('character_info_id','=',$id);
-        AbilityValues::where('character_info_id','=',$id);
-        ::with(['author', 'publisher'])->get();
-
-        return $task
-                ? response()->json($task, 200)
-                : response()->json([], 500);*/
 
         $test = array(
-            "CharacterInfos" => CharacterInfos::find(1),
-            "ability_values" => CharacterInfos::find(1)->ability_values()->first()
+            "character_info" => CharacterInfos::find(1),
+            "ability_values" => CharacterInfos::find(1)->ability_values()->get(),
+            "specialzed_skills" => CharacterInfos::find(1)->specialzed_skills()->get(),
+            "flavor_infos" => CharacterInfos::find(1)->flavor_infos()->get()
         );
 
-        return CharacterInfos::find(1)->ability_values()->get();
+        return $test
+            ? response()->json($test, 200)
+            : response()->json([], 500);
     }
 
     /**
@@ -70,6 +64,7 @@ class CharacterSheetController extends Controller
     public function update(Request $request, $id)
     {
         //
+        return response()->json([], 500);
     }
 
     /**
@@ -81,5 +76,6 @@ class CharacterSheetController extends Controller
     public function destroy($id)
     {
         //
+        return response()->json([], 500);
     }
 }

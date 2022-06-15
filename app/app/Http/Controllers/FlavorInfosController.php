@@ -4,28 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFlavorInfosRequest;
 use App\Http\Requests\UpdateFlavorInfosRequest;
+use \Illuminate\Http\JsonResponse;
 use App\Models\FlavorInfos;
+use App\Models\CharacterInfos;
 
 class FlavorInfosController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function show($character_info_id)
     {
-        //
-    }
+        $result = [];
+        $result = CharacterInfos::find($character_info_id)->flavor_infos()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $result
+            ? response()->json($result, 201)
+            : response()->json([], 500);
     }
 
     /**
@@ -37,41 +35,9 @@ class FlavorInfosController extends Controller
     public function store(StoreFlavorInfosRequest $request)
     {
         //
+        return response()->json([], 500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\FlavorInfos  $flavorInfos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(FlavorInfos $flavorInfos)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\FlavorInfos  $flavorInfos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(FlavorInfos $flavorInfos)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateFlavorInfosRequest  $request
-     * @param  \App\Models\FlavorInfos  $flavorInfos
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateFlavorInfosRequest $request, FlavorInfos $flavorInfos)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -82,5 +48,6 @@ class FlavorInfosController extends Controller
     public function destroy(FlavorInfos $flavorInfos)
     {
         //
+        return response()->json([], 500);
     }
 }

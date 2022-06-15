@@ -4,28 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAbilityValuesRequest;
 use App\Http\Requests\UpdateAbilityValuesRequest;
+use \Illuminate\Http\JsonResponse;
 use App\Models\AbilityValues;
+use App\Models\CharacterInfos;
 
 class AbilityValuesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function show($character_info_id)
     {
-        //
-    }
+        $result = [];
+        $result = CharacterInfos::find($character_info_id)->ability_values()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $result
+            ? response()->json($result, 201)
+            : response()->json([], 500);
     }
 
     /**
@@ -37,40 +35,7 @@ class AbilityValuesController extends Controller
     public function store(StoreAbilityValuesRequest $request)
     {
         //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AbilityValues  $abilityValues
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AbilityValues $abilityValues)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AbilityValues  $abilityValues
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AbilityValues $abilityValues)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAbilityValuesRequest  $request
-     * @param  \App\Models\AbilityValues  $abilityValues
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAbilityValuesRequest $request, AbilityValues $abilityValues)
-    {
-        //
+        return response()->json([], 500);
     }
 
     /**
@@ -82,5 +47,6 @@ class AbilityValuesController extends Controller
     public function destroy(AbilityValues $abilityValues)
     {
         //
+        return response()->json([], 500);
     }
 }
