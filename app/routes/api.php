@@ -2,8 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CharacterSheetController;
+use App\Http\Controllers\LoginController;
 
+use App\Http\Controllers\CharacterSheetController;
 use App\Http\Controllers\FlavorInfosController;
 use App\Http\Controllers\SpecialzedSkillsController;
 use App\Http\Controllers\AbilityValuesController;
@@ -19,6 +20,17 @@ use App\Http\Controllers\CharacterInfosController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+/*
+↓これにログイン時のみで使うapiを入れる
+Route::group(['middleware' => 'auth:sanctum'] , function(){
+});
+*/
+
+//ログイン・ログアウト
+Route::post('login',[LoginController::class, 'login']);
+Route::post('logout',[LoginController::class, 'logout']);
+
 //api/v1/flavor_infos/{character_info_id}
 //api/v1/flavor_infos/delete/{$id}
 //api/v1/flavor_infos/add/{$id}
@@ -46,6 +58,8 @@ Route::get('/v1/character_infos/{id}', [CharacterInfosController::class, 'show']
 //api/v1/character/edit/{$id}
 //api/v1/character/delete/{$id}
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:sanctum'] , function() {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });

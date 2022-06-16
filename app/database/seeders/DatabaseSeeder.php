@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(5)->create();
+        $this->call(UserSeedder::class);
         $this->call(CharacterInfosSeeder::class);
         $this->call(AbilityValuesSeeder::class);
         $this->call(FlavorInfosSeeder::class);
