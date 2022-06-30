@@ -47,7 +47,7 @@ Route::get('/v1/specialzed_skills/{character_info_id}', [SpecialzedSkillsControl
 Route::get('/v1/ability_values/{character_info_id}', [AbilityValuesController::class, 'show']);
 
 //api/v1/character_infos/{$id}
-Route::get('/v1/character_infos/{id}', [CharacterInfosController::class, 'show']);
+//Route::get('/v1/character_infos/{id}', [CharacterInfosController::class, 'show']);
 
 // todo apiを整理して必要なレスポンスを割り出す
 // Route::get('/v1/character/{id}', [CharacterSheetController::class, 'show']);
@@ -58,8 +58,14 @@ Route::get('/v1/character_infos/{id}', [CharacterInfosController::class, 'show']
 //api/v1/character/edit/{$id}
 //api/v1/character/delete/{$id}
 
+
+
+
 Route::group(['middleware' => 'auth:sanctum'] , function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    // ユーザーに紐づくキャラクターを全て出力する
+    Route::get('/v1/characters/{user_id}', [CharacterInfosController::class, 'show_index']);
 });
