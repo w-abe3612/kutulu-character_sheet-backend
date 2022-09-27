@@ -4,31 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterInfos extends Model
 {
     use HasFactory;
-    /**
-     * 
-     */
-    public function ability_values()
-    {
-        return $this->hasMany(AbilityValues::class,'character_info_id','id');
-    }
 
-    /**
-     * 
-     */
-    public function flavor_infos()
-    {
-        return $this->hasMany(FlavorInfos::class,'character_info_id','id');
-    }
-
-    /**
-     * 
-     */
-    public function specialzed_skills()
-    {
-        return $this->hasMany(SpecialzedSkills::class,'character_info_id','id');
-    }
+    protected $fillable = [
+        'user_id',
+        'player_name',
+        'player_character',
+        'character_title',
+        'injury_value',
+        'image_path',
+        'ability_value_max',
+        'ability_value_total',
+        'specialized_skill_max',
+        'specialized_skill_total',
+        'possession_item',
+        'character_preference',
+        'delete_flg',
+    ];
 }

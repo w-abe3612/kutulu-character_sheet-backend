@@ -17,14 +17,10 @@ class CharacterInfosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show_index( $user_id )
+    public function index()
     {
         $result = [];
-        // localstrageを変更して、悪いことしようとしてる人は403返す
-        if ( intval( $user_id ) !== intval( Auth::id() ) ) {
-            return response()->json([], 403 );
-        }
-        $result = User::find( intval( Auth::id() ) )->charactor_index()->get();
+        $result = CharacterInfos::where('user_id', intval( Auth::id()))->get();
 
         return $result
             ? response()->json($result, 201)

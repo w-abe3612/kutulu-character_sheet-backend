@@ -9,6 +9,7 @@ use App\Models\CharacterInfos;
 use App\Models\AbilityValues;
 use App\Models\FlavorInfos;
 use App\Models\SpecialzedSkills;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterSheetController extends Controller
 {
@@ -25,32 +26,39 @@ class CharacterSheetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  TaskRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $request->merge([
+            'user_id' => Auth::id()
+        ]);
+        var_dump($request->all());
+        $charactorInfo = CharacterInfos::create( $request->all() );
+        var_dump($charactorInfo);
+
+        return $charactorInfo
+                ? response()->json($charactorInfo, 201)
+                : response()->json([], 500);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $user_id
+     * @param  int  $character_id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(Request $request)
     {
+        $result = [];
+        $result = CharacterInfos::where('id', $request->character_id)
+                                ->where('user_id', Auth::id() )
+                                ->get();
 
-        $test = array(
-            "character_info" => CharacterInfos::find(1),
-            "ability_values" => CharacterInfos::find(1)->ability_values()->get(),
-            "specialzed_skills" => CharacterInfos::find(1)->specialzed_skills()->get(),
-            "flavor_infos" => CharacterInfos::find(1)->flavor_infos()->get()
-        );
-
-        return $test
-            ? response()->json($test, 200)
+        return $result
+            ? response()->json($result, 201)
             : response()->json([], 500);
     }
 
@@ -73,9 +81,15 @@ class CharacterSheetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        //
-        return response()->json([], 500);
+        $target_chara = CharacterInfos::where('id', $request->character_id)
+                                ->where('user_id', $request->user_id )
+                                ->get();
+        $target_chara->delete_flg = true;
+
+        return $target_chara->update()
+                ? response()->json($target_chara,201)
+                : response()->json([], 500);
     }
 }

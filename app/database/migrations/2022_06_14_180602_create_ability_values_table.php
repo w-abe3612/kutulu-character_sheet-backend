@@ -4,20 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-/*
-ability_values	
-	
-//id	
-//character_info_id	
-//user_id	
-//skill_name	スキル名
-//skill_param	パラメーター名
-//skill_value	スキル値
-//skill_type	ポジティブかパッシブか
-//skill_order	並び順
-created_at	
-updatedd_at	
-*/
 
 class CreateAbilityValuesTable extends Migration
 {

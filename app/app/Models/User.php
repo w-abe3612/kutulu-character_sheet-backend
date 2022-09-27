@@ -12,14 +12,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-        /**
-     * 
-     */
-    public function charactor_index()
-    {
-        return $this->hasMany(CharacterInfos::class,'user_id','id');
-    }
-
     /**
      * The attributes that are mass assignable.
      *

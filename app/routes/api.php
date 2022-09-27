@@ -10,6 +10,7 @@ use App\Http\Controllers\SpecialzedSkillsController;
 use App\Http\Controllers\AbilityValuesController;
 use App\Http\Controllers\CharacterInfosController;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,41 +32,31 @@ Route::group(['middleware' => 'auth:sanctum'] , function(){
 Route::post('login',[LoginController::class, 'login']);
 Route::post('logout',[LoginController::class, 'logout']);
 
-//api/v1/flavor_infos/{character_info_id}
-//api/v1/flavor_infos/delete/{$id}
-//api/v1/flavor_infos/add/{$id}
-Route::get('/v1/flavor_infos/{character_info_id}', [FlavorInfosController::class, 'show']);
-
-//api/v1/specialzed_skills/{character_info_id}
-//api/v1/specialzed_skills/delete/{$id}
-//api/v1/specialzed_skills/add/{$id}
-Route::get('/v1/specialzed_skills/{character_info_id}', [SpecialzedSkillsController::class, 'show']);
-
-//api/v1/ability_values/{character_info_id}
-//api/v1/ability_values/delete/{$id}
-//api/v1/ability_values/add/{$id}
-Route::get('/v1/ability_values/{character_info_id}', [AbilityValuesController::class, 'show']);
-
-//api/v1/character_infos/{$id}
-//Route::get('/v1/character_infos/{id}', [CharacterInfosController::class, 'show']);
-
-// todo apiを整理して必要なレスポンスを割り出す
-// Route::get('/v1/character/{id}', [CharacterSheetController::class, 'show']);
-
-//api/v1/characters
-//api/v1/character/search
-//api/v1/character/create
-//api/v1/character/edit/{$id}
-//api/v1/character/delete/{$id}
+// get キャラクターIDに紐づくキャラクター情報
+Route::get('/v1/character/view/{user_id}/{character_id}', [CharacterSheetController::class, 'show']);
 
 
+// put ユーザー設定　基本設定
+// put ユーザー設定　メールアドレス
+// put ユーザー設定　パスワード
 
+// create ユーザー
+// delete ユーザー
 
 Route::group(['middleware' => 'auth:sanctum'] , function() {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    //
+    Route::get('/v1/character/{character_id}', [CharacterSheetController::class, 'show']);
+
+    // create キャラクター
+    Route::post('/v1/character/create/', [CharacterSheetController::class, 'store']);
+    // put キャラクター更新
+    // Route::put('/v1/character/edit/{character_id}', [CharacterSheetController::class, 'show']);
+    // delete キャラクター削除
+    Route::delete('/v1/character/delete/{character_id}', [CharacterSheetController::class, 'delete']);
 
     // ユーザーに紐づくキャラクターを全て出力する
-    Route::get('/v1/characters/{user_id}', [CharacterInfosController::class, 'show_index']);
+    Route::get('/v1/characters', [CharacterInfosController::class, 'index']);
 });
