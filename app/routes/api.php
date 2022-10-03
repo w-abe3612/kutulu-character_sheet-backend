@@ -2,14 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
+
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerifyController;
 
 use App\Http\Controllers\CharacterSheetController;
 use App\Http\Controllers\FlavorInfosController;
 use App\Http\Controllers\SpecialzedSkillsController;
 use App\Http\Controllers\AbilityValuesController;
 use App\Http\Controllers\CharacterInfosController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -28,21 +30,26 @@ Route::group(['middleware' => 'auth:sanctum'] , function(){
 });
 */
 
-//ログイン・ログアウト
-Route::post('login',[LoginController::class, 'login']);
-Route::post('logout',[LoginController::class, 'logout']);
 
 // get キャラクターIDに紐づくキャラクター情報
 Route::get('/v1/character/view/{user_id}/{character_id}', [CharacterSheetController::class, 'show']);
 
+// ユーザー仮登録
+Route::post('/v1/registration/create/', [RegisterController::class, 'register']);
+
+// ユーザーアクティベート
+Route::post('/v1/verify/', [VerifyController::class, 'verify']);
+
+//ログイン・ログアウト
+Route::post('/login',[LoginController::class, 'login']);
+Route::post('/logout',[LoginController::class, 'logout']);
+
 
 // put ユーザー設定　基本設定
-// put ユーザー設定　メールアドレス
 // put ユーザー設定　パスワード
 
 // create ユーザー
 // delete ユーザー
-
 Route::group(['middleware' => 'auth:sanctum'] , function() {
     Route::get('/user', function (Request $request) {
         return $request->user();

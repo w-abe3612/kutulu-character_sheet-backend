@@ -83,9 +83,10 @@ class CharacterSheetController extends Controller
      */
     public function delete(Request $request)
     {
-        $target_chara = CharacterInfos::where('id', $request->character_id)
-                                ->where('user_id', $request->user_id )
-                                ->get();
+        $target_chara = 
+            CharacterInfos::where('id', $request->character_id)
+                ->where('user_id', $request->user_id )
+                ->get();
         $target_chara->delete_flg = true;
 
         return $target_chara->update()
