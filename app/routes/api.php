@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'] , function(){
 
 
 // get キャラクターIDに紐づくキャラクター情報
-Route::get('/v1/character/view/{user_id}/{character_id}', [CharacterSheetController::class, 'show']);
+Route::get('/v1/character/view/{user_id}/{character_id}/', [CharacterSheetController::class, 'show']);
 
 // ユーザー仮登録
 Route::post('/v1/registration/create/', [RegisterController::class, 'register']);
@@ -41,8 +41,8 @@ Route::post('/v1/registration/create/', [RegisterController::class, 'register'])
 Route::post('/v1/verify/', [VerifyController::class, 'verify']);
 
 //ログイン・ログアウト
-Route::post('/login',[LoginController::class, 'login']);
-Route::post('/logout',[LoginController::class, 'logout']);
+Route::post('/login/',[LoginController::class, 'login']);
+Route::post('/logout/',[LoginController::class, 'logout']);
 
 
 // put ユーザー設定　基本設定

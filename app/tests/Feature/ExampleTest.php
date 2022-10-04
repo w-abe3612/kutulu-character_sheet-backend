@@ -88,16 +88,5 @@ class ExampleTest extends TestCase
         
         $verifed_user = '';
         $verifed_user = User::where('email','test1234@test.cm')->get();
-
-        // ログイン
-        $data3 = [
-            'email' => 'test1234@test.cm',
-            'password' => 'test1234',
-        ];
-        $response3 = $this->postJson('/api/login/', $data3);
-        $response3 ->assertStatus(201);
-
-        $response4 = $this->postJson('/api/logout/');
-        //$response4 ->assertStatus(201);
     }
 }

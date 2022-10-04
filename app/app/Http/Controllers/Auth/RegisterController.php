@@ -21,8 +21,6 @@ class RegisterController extends AuthController
      */
     public function register(Request $request)
     {
-        // already logged in
-        $this->alreadyLogin($request);
 
         // validation
         $this->validateRegister($request);

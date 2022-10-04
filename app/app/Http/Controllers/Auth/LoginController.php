@@ -5,18 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\AuthController;
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Support\Facades\Auth;
 
 final class LoginController extends AuthController
 {
-    use ThrottlesLogins;
-
-    // ログイン試行回数（回）
-    protected $maxAttempts = 3;
-
-    // ログインロックタイム（分）
-    protected $decayMinutes = 1;
-
     /**
      * login
      *
@@ -28,43 +20,22 @@ final class LoginController extends AuthController
     public function login(Request $request)
     {
         // already logged in
-        $this->alreadyLogin($request);
-
-        // validate
-        $this->validateLogin($request);
-
-        // too many login
-        if (method_exists($this, 'hasTooManyLoginAttempts') && $this->hasTooManyLoginAttempts($request)) {
-
-            // event
-            $this->fireLockoutEvent($request);
-
-            // Lockout response
-            return $this->sendLockoutResponse($request);
+        if ( Auth::check() ) {
+            return response()->json([], 402);
         }
 
-        // check login
-        if ($this->attemptLogin($request)) {
-
-            // regenerate token
-            $request->session()->regenerate();
-
-            // ログイン失敗をリセット
-            $this->clearLoginAttempts($request);
-
-            // success login response
-            return $this->responseSuccess('Logged in.', [
-                'user' => $request->user()
-            ]);
-        }
-
-        // ログイン試行をカウントアップ
-        $this->incrementLoginAttempts($request);
-
-        // fail login response
-        return $this->responseInvalid('invalid data.', [
-            $this->username() => [trans('auth.failed')],
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
+ 
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+ 
+            return response()->json(Auth::user(),201);
+        }
+
+        return response()->json([], 401);
     }
 
     /**
@@ -75,8 +46,7 @@ final class LoginController extends AuthController
      */
     public function logout(Request $request)
     {
-        // logout
-        $this->getGuard()->logout();
+        Auth::logout();
 
         // session refresh
         $request->session()->invalidate();
@@ -85,6 +55,6 @@ final class LoginController extends AuthController
         $request->session()->regenerateToken();
 
         // success login response
-        return $this->responseSuccess('Logged out.');
+        return response()->json([], 201);
     }
 }

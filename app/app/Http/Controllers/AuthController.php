@@ -21,18 +21,7 @@ class AuthController extends Controller
         return 'email';
     }
 
-   /**
-     * get guard
-     *
-     * @return \Illuminate\Contracts\Auth\Guard
-     */
-    protected function getGuard()
-    {
-        return Auth::guard(config('auth.defaults.guard'));
-    }
-
     /**
-     * Get the needed authorization credentials from the request.
      * 認証に使うパラメータを取得
      *
      * @param  Request $request
@@ -41,21 +30,6 @@ class AuthController extends Controller
     protected function credentials(Request $request)
     {
         return $request->only($this->username(), 'password');
-    }
-
-    /**
-     * Attempt to log the user into the application.
-     * ログインさせる
-     *
-     * @param  Request $request
-     * @return bool
-     */
-    protected function attemptLogin(Request $request)
-    {
-        return $this->getGuard()->attempt(
-            $this->credentials($request),
-            $request->filled('remember')
-        );
     }
 
     /**
@@ -93,40 +67,6 @@ class AuthController extends Controller
             ->isPast();
     }
 
-    /**
-     * alreadyLogin
-     *
-     * @param  Request $request
-     * @param string|null $message
-     * @return void
-     *
-     * @throws HttpException
-     */
-    protected function alreadyLogin(Request $request, string $message = null)
-    {
-        // set message
-        $message = is_null($message) ? 'Already logged in.' : $message;
-
-        // already logged in
-        if (auth()->check()) {
-            throw new HttpException(403, trans($message));
-        }
-    }
-
-    /**
-     * validateLogin
-     *
-     * @param  Request $request
-     * @return void
-     */
-    protected function validateLogin(Request $request)
-    {
-        $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-            'remember' => 'boolean',
-        ]);
-    }
 
     /**
      * Validate the user register request.

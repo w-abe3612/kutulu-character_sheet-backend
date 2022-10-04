@@ -19,8 +19,6 @@ class VerifyController extends AuthController
      */
     public function verify(Request $request)
     {
-        // already logged in
-        $this->alreadyLogin($request);
 
         // 仮登録のデータをトークンで取得
         $registerUser = $this->getRegisterUser($request->token);
