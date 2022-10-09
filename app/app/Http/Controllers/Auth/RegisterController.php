@@ -32,10 +32,11 @@ class RegisterController extends AuthController
         $registerUser = $this->setRegisterUser($request, $token);
 
         // send email
-        $this->sendVerificationMail($registerUser);
+        //$this->sendVerificationMail($registerUser);
 
         // success response
-        return $this->responseSuccess('sent email.');
+        return response()->json([],201);
+        //return $this->responseSuccess('sent email.');
     }
 
     /**
