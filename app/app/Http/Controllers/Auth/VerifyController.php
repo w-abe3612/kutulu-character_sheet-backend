@@ -19,7 +19,6 @@ class VerifyController extends AuthController
      */
     public function verify(Request $request)
     {
-
         // 仮登録のデータをトークンで取得
         $registerUser = $this->getRegisterUser($request->token);
 
@@ -33,14 +32,8 @@ class VerifyController extends AuthController
 
         // event
         event(new Registered($user));
+        return response()->json([],201);
 
-        // 作成したユーザをログインさせる
-        auth()->loginUsingId($user->id, true);
-
-        // success login response
-        return $this->responseSuccess('Logged in.', [
-            'user' => $request->user()
-        ]);
     }
 
     /**

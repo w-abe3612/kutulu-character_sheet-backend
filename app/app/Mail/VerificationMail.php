@@ -35,13 +35,11 @@ class VerificationMail extends Mailable
         // 件名
         $subject = 'Verification mail';
 
-        // VueへのコールバックURLをルート名で取得
-        $baseUrl = config('app.url');
+        $baseUrl = config('app.front');
         $token = $this->token;
-        $url = "{$baseUrl}/{$this->verifyRoute}/{$token}";
+        $url = "{$baseUrl}/register/verify/?token={$token}";
 
         // 送信元のアドレス
-        // .envの「MAIL_FROM_ADDRESS」に設定したアドレスを取得
         $from = config('mail.from.address');
 
         // メール送信
