@@ -45,8 +45,6 @@ Route::post('/v1/login/',[LoginController::class, 'login']);
 Route::post('/v1/logout/',[LoginController::class, 'logout']);
 
 
-// put ユーザー設定　基本設定
-// put ユーザー設定　パスワード
 
 // create ユーザー
 // delete ユーザー
@@ -55,12 +53,12 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
         return $request->user();
     });
     //
-    Route::get('/v1/character/{character_id}', [CharacterSheetController::class, 'show']);
+    Route::get('/v1/characters/{character_id}', [CharacterSheetController::class, 'show']);
 
     // create キャラクター
     Route::post('/v1/character/create/', [CharacterSheetController::class, 'store']);
     // put キャラクター更新
-    // Route::put('/v1/character/edit/{character_id}', [CharacterSheetController::class, 'show']);
+    // Route::put('/v1/character/edit/{character_id}', [CharacterSheetController::class, 'edit']);
     // delete キャラクター削除
     Route::delete('/v1/character/delete/{character_id}', [CharacterSheetController::class, 'delete']);
 

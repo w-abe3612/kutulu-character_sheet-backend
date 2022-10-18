@@ -20,9 +20,10 @@ final class LoginController extends AuthController
     public function login(Request $request)
     {
         // already logged in
+        /*
         if ( Auth::check() ) {
             return response()->json([], 402);
-        }
+        }*/
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],

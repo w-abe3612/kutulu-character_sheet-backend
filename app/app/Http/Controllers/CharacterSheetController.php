@@ -34,13 +34,13 @@ class CharacterSheetController extends Controller
         $request->merge([
             'user_id' => Auth::id()
         ]);
-        var_dump($request->all());
+
         $charactorInfo = CharacterInfos::create( $request->all() );
-        var_dump($charactorInfo);
 
         return $charactorInfo
                 ? response()->json($charactorInfo, 201)
-                : response()->json([], 500);
+                : response()->json([], 501);
+
     }
 
     /**
