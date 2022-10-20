@@ -18,9 +18,16 @@ class CharacterSheetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return response()->json([], 201)
+        /*
+        $result = [];
+        $result = CharacterInfos::where('user_id', Auth::id() )>get();
+
+        return $result
+            ? response()->json($result, 201)
+            : response()->json([], 501);*/
     }
 
     /**

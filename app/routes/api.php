@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'] , function(){
 
 
 // get キャラクターIDに紐づくキャラクター情報
-Route::get('/v1/character/view/{user_id}/{character_id}/', [CharacterSheetController::class, 'show']);
+Route::get('/v1/character/{user_id}/view/{character_id}/', [CharacterSheetController::class, 'show']);
 
 // ユーザー仮登録
 Route::post('/v1/registration/', [RegisterController::class, 'register']);
@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
         return $request->user();
     });
     //
-    Route::get('/v1/characters/{character_id}', [CharacterSheetController::class, 'show']);
+    Route::get('/v1/characters/', [CharacterSheetController::class, 'index']);
 
     // create キャラクター
     Route::post('/v1/character/create/', [CharacterSheetController::class, 'store']);
