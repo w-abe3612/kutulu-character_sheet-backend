@@ -32,7 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'] , function(){
 
 
 // get キャラクターIDに紐づくキャラクター情報
-Route::get('/v1/character/{user_id}/view/{character_id}/', [CharacterSheetController::class, 'show']);
+//Route::get('/v1/character/{user_id}/view/{character_id}/', [CharacterSheetController::class, 'show']);
 
 // ユーザー仮登録
 Route::post('/v1/registration/', [RegisterController::class, 'register']);
@@ -49,7 +49,7 @@ Route::post('/v1/logout/',[LoginController::class, 'logout']);
 // create ユーザー
 // delete ユーザー
 Route::group(['middleware' => 'auth:sanctum'] , function() {
-    Route::get('/user', function (Request $request) {
+    Route::get('/v1/user/', function (Request $request) {
         return $request->user();
     });
     //
@@ -60,8 +60,6 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
     // put キャラクター更新
     // Route::put('/v1/character/edit/{character_id}', [CharacterSheetController::class, 'edit']);
     // delete キャラクター削除
-    Route::delete('/v1/character/delete/{character_id}', [CharacterSheetController::class, 'delete']);
+    Route::post('/v1/character/delete/', [CharacterSheetController::class, 'delete']);
 
-    // ユーザーに紐づくキャラクターを全て出力する
-    Route::get('/v1/characters', [CharacterInfosController::class, 'index']);
 });

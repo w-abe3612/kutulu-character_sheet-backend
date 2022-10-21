@@ -26,7 +26,7 @@ class CharacterInfosFactory extends Factory
             'specialized_skill_total'=>0,
             'possession_item'=>$this->faker -> sentence(4,true),
             'character_preference'=>$this->faker -> sentence(4,true),
-            'delete_flg'=> false,
+            'delete_flg'=> true,
             'deleted_at'=> null,
         ];
     }

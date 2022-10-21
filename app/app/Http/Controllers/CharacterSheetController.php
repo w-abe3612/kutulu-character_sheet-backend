@@ -20,14 +20,12 @@ class CharacterSheetController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json([], 201)
-        /*
         $result = [];
-        $result = CharacterInfos::where('user_id', Auth::id() )>get();
+        $result = CharacterInfos::where('user_id', Auth::id() )->where('delete_flg','<>', '1')->get();
 
         return $result
             ? response()->json($result, 201)
-            : response()->json([], 501);*/
+            : response()->json([], 501);
     }
 
     /**
@@ -62,6 +60,7 @@ class CharacterSheetController extends Controller
         $result = [];
         $result = CharacterInfos::where('id', $request->character_id)
                                 ->where('user_id', Auth::id() )
+                                ->where('delete_flg','!=',true)
                                 ->get();
 
         return $result
@@ -92,11 +91,14 @@ class CharacterSheetController extends Controller
     {
         $target_chara = 
             CharacterInfos::where('id', $request->character_id)
-                ->where('user_id', $request->user_id )
-                ->get();
-        $target_chara->delete_flg = true;
+                            ->where('user_id', Auth::id() )
+                            ->get();
+                            
 
-        return $target_chara->update()
+        $target_chara[0]->delete_flg = true;
+        $target_chara->deleted_at = date('Y-m-d H:i:s');
+
+        return $target_chara[0]->update()
                 ? response()->json($target_chara,201)
                 : response()->json([], 500);
     }
