@@ -33,15 +33,8 @@ class ExampleTest extends TestCase
     }*/
 
     public function test_example() {
-        // こうしてログイン状態を作る
-        $this->user = User::factory()->create();
-        $this->actingAs($this->user)->get('/');
+        
 
-        CharacterInfos::factory()->create();
-        //$test = CharacterInfos::where('user_id', 1 )->where('delete_flg','<>', '1')->get();
-        $test = CharacterInfos::where('user_id', 1 )->where('delete_flg','<>', '1')->get();
-        //$test = CharacterInfos::where('user_id', 1 )->get();
-        dd($test);
     }
 /*
     public function test_registration() {
@@ -74,4 +67,8 @@ class ExampleTest extends TestCase
         $verifed_user = '';
         $verifed_user = User::where('email','test1234@test.cm')->get();
     }*/
+
+    public function create_function() {
+
+    }
 }

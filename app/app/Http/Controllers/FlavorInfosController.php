@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreFlavorInfosRequest;
 use App\Http\Requests\UpdateFlavorInfosRequest;
-use \Illuminate\Http\JsonResponse;
 use App\Models\FlavorInfos;
-use App\Models\CharacterInfos;
+use Illuminate\Support\Facades\Auth;
 
 class FlavorInfosController extends Controller
 {
@@ -16,38 +17,15 @@ class FlavorInfosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($character_info_id)
+    public function show(Request $request)
     {
         $result = [];
-        $result = CharacterInfos::find($character_info_id)->flavor_infos()->get();
+        $result = FlavorInfos::where('character_info_id', $request->character_id)
+                    ->where('user_id', Auth::id() )
+                    ->get();
 
         return $result
             ? response()->json($result, 201)
-            : response()->json([], 500);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreFlavorInfosRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreFlavorInfosRequest $request)
-    {
-        //
-        return response()->json([], 500);
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\FlavorInfos  $flavorInfos
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(FlavorInfos $flavorInfos)
-    {
-        //
-        return response()->json([], 500);
+            : response()->json([], 501);
     }
 }

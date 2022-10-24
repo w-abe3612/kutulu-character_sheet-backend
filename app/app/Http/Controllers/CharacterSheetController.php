@@ -48,6 +48,63 @@ class CharacterSheetController extends Controller
 
     }
 
+    public function create(Request $request)
+    {
+        //　todo 要リファクタリング
+        // エラーハンドリング
+        $ci = $request->characterInfo[0];
+        $fi = $request->flavorInfoValue;
+        $av = $request->abilityValues;
+        $ss = $request->specializedSkill;
+
+        $ci['user_id'] = Auth::id();
+        $charactorInfo = CharacterInfos::create($ci);
+        $character_id = $charactorInfo->id;
+
+
+        foreach($fi as $key => $val){
+            $fi[$key]['user_id'] = Auth::id();
+            $fi[$key]['character_info_id'] = $character_id;
+            $fi[$key]['flavor_info_value'] = !empty($fi[$key]['flavor_info_value'])?$fi[$key]['flavor_info_value']:'';
+        }
+        //$flaverinfo = FlavorInfos::insert($fi);
+        /*
+        return $flaverinfo
+            ? response()->json($flaverinfo, 201)
+            : response()->json([], 500);
+        */
+        
+        foreach($av as $key => $val){
+            $av[$key]['user_id'] = Auth::id();
+            $av[$key]['character_info_id'] = $character_id;
+        }
+        $abilityvalue = AbilityValues::insert($av);
+        
+        //return response()->json($av, 200);
+        /*
+        $abilityvalue = AbilityValues::insert($av);
+        return $abilityvalue
+            ? response()->json($abilityvalue, 201)
+            : response()->json([], 500);
+            */
+        /*
+        return $abilityvalue
+            ? response()->json($abilityvalue, 201)
+            : response()->json([], 500);
+        */
+        
+        foreach($ss as $key => $val){
+            $ss[$key]['user_id'] = Auth::id();
+            $ss[$key]['character_info_id'] = $character_id;
+        }
+        $test = SpecialzedSkills::insert($ss);
+        //return response()->json($request->specializedSkill, 201);
+        //
+
+        return response()->json($test, 201);
+
+    }
+
     /**
      * Display the specified resource.
      *

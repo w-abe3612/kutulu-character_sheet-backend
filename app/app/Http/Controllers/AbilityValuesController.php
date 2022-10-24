@@ -25,28 +25,4 @@ class AbilityValuesController extends Controller
             ? response()->json($result, 201)
             : response()->json([], 500);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAbilityValuesRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAbilityValuesRequest $request)
-    {
-        //
-        return response()->json([], 500);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AbilityValues  $abilityValues
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AbilityValues $abilityValues)
-    {
-        //
-        return response()->json([], 500);
-    }
 }
