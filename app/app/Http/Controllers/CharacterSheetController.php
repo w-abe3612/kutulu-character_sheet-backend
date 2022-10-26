@@ -11,6 +11,8 @@ use App\Models\FlavorInfos;
 use App\Models\SpecialzedSkills;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Storage;
+
 class CharacterSheetController extends Controller
 {
     /**
@@ -48,61 +50,91 @@ class CharacterSheetController extends Controller
 
     }
 
+    public function storeImage($base64Context, $storage, $dir)
+    {
+        try {
+            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
+            $extension = $matches[1];
+
+            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
+            $img = str_replace(' ', '+', $img);
+            $fileData = base64_decode($img);
+
+            $dir = rtrim($dir, '/').'/';
+            $fileName = md5($img);
+            $path = $dir.$fileName.'.'.$extension;
+
+            Storage::disk($storage)->put($path, $fileData);
+
+            return $path;
+
+        } catch (Exception $e) {
+            Log::error($e);
+            return null;
+        }
+    }
+
     public function create(Request $request)
     {
+        // フィールドの仕分け作業はサーバーサイドのお仕事になりそう
         //　todo 要リファクタリング
         // エラーハンドリング
+        /*
         $ci = $request->characterInfo[0];
         $fi = $request->flavorInfoValue;
         $av = $request->abilityValues;
         $ss = $request->specializedSkill;
-
+        */
+/*
         $ci['user_id'] = Auth::id();
         $charactorInfo = CharacterInfos::create($ci);
         $character_id = $charactorInfo->id;
+*/
 
+        //Storage::put('avatars/1', $content);
+        //dd($request);
+        //$request->hasFile('characterInfo_0_image_path');
+        //$characterInfo = array();
+        $result = $this->storeImage($request->characterInfo[0]['image_path'], 'local', '');
+        
+        return response()->json($result, 201);
 
+/*
         foreach($fi as $key => $val){
             $fi[$key]['user_id'] = Auth::id();
             $fi[$key]['character_info_id'] = $character_id;
             $fi[$key]['flavor_info_value'] = !empty($fi[$key]['flavor_info_value'])?$fi[$key]['flavor_info_value']:'';
         }
+
+        $flaverinfo = FlavorInfos::insert($fi);
+ */
         //$flaverinfo = FlavorInfos::insert($fi);
         /*
         return $flaverinfo
             ? response()->json($flaverinfo, 201)
             : response()->json([], 500);
         */
-        
+    /*    
         foreach($av as $key => $val){
             $av[$key]['user_id'] = Auth::id();
             $av[$key]['character_info_id'] = $character_id;
         }
         $abilityvalue = AbilityValues::insert($av);
-        
-        //return response()->json($av, 200);
-        /*
-        $abilityvalue = AbilityValues::insert($av);
-        return $abilityvalue
-            ? response()->json($abilityvalue, 201)
-            : response()->json([], 500);
-            */
+        */
         /*
         return $abilityvalue
             ? response()->json($abilityvalue, 201)
             : response()->json([], 500);
         */
-        
+        /*
         foreach($ss as $key => $val){
             $ss[$key]['user_id'] = Auth::id();
             $ss[$key]['character_info_id'] = $character_id;
         }
         $test = SpecialzedSkills::insert($ss);
-        //return response()->json($request->specializedSkill, 201);
-        //
-
+        
         return response()->json($test, 201);
-
+        */
     }
 
     /**

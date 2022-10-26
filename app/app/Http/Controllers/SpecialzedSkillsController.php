@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreSpecialzedSkillsRequest;
 use App\Http\Requests\UpdateSpecialzedSkillsRequest;
 use App\Models\SpecialzedSkills;
+use Illuminate\Support\Facades\Auth;
 
 class SpecialzedSkillsController extends Controller
 {
@@ -20,7 +21,7 @@ class SpecialzedSkillsController extends Controller
     public function show(Request $request)
     {
         $result = [];
-        $result = SpecialzedSkills::where('character_info_id', $request->character_info_id)
+        $result = SpecialzedSkills::where('character_info_id', $request->character_id)
                     ->where('user_id', Auth::id() )
                     ->get();
 

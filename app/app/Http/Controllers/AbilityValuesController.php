@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 use App\Http\Requests\StoreAbilityValuesRequest;
 use App\Http\Requests\UpdateAbilityValuesRequest;
-use \Illuminate\Http\JsonResponse;
+
 use App\Models\AbilityValues;
-use App\Models\CharacterInfos;
+use Illuminate\Support\Facades\Auth;
 
 class AbilityValuesController extends Controller
 {
@@ -16,10 +18,12 @@ class AbilityValuesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($character_info_id)
+    public function show(Request $request)
     {
         $result = [];
-        $result = CharacterInfos::find($character_info_id)->ability_values()->get();
+        $result = AbilityValues::where('character_info_id', $request->character_id)
+                    ->where('user_id', Auth::id() )
+                    ->get();
 
         return $result
             ? response()->json($result, 201)
