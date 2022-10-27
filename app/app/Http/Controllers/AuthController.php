@@ -55,6 +55,19 @@ class AuthController extends Controller
     }
 
     /**
+     * 公開用のURLの生成の際にidを隠す為のトークンの作成
+     * @return string
+     */
+    public function public_pageToken( $something_id = 0 )
+    {
+        $result = '';
+        if ( !empty($something_id) ) {
+            $result = hash_hmac('sha256', $something_id, config('app.public_page_creating_key'));
+        }
+        return $result;
+    }
+
+    /**
      * Determine if the token has expired.
      *
      * @param string $createdAt

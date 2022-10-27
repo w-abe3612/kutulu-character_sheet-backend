@@ -121,6 +121,7 @@ return [
     */
 
     'key' => env('APP_KEY'),
+    'public_page_creating_key' => env('PUBLIC_PAGE_CREATING_KEY'),
 
     'cipher' => 'AES-256-CBC',
 

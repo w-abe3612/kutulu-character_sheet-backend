@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\RegisterUser;
 use App\Models\CharacterInfos;
+use App\Http\Controllers\AuthController;
 
 class ExampleTest extends TestCase
 {
@@ -31,11 +32,12 @@ class ExampleTest extends TestCase
         dd($response);
         $response->assertStatus(201);
     }*/
-
+/*
     public function test_example() {
         
 
     }
+*/
 /*
     public function test_registration() {
         // ユーザー仮作成
@@ -68,7 +70,7 @@ class ExampleTest extends TestCase
         $verifed_user = User::where('email','test1234@test.cm')->get();
     }*/
 
-    public function create_function() {
-
+    public function test_create_function() {
+        dd(AuthController::public_pageToken(2));
     }
 }
