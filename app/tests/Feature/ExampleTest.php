@@ -71,6 +71,18 @@ class ExampleTest extends TestCase
     }*/
 
     public function test_create_function() {
-        dd(AuthController::public_pageToken(2));
+        //dd(AuthController::public_pageToken(2));
+
+        $user = User::create([
+            'name' => 'aaa',
+            'email' => 'aaaa@aaa.aa',
+            'email_verified_at' => now(),
+            'password' => 'password',
+        ]);
+
+        $userId = $user->id;
+        $user->public_page_token = AuthController::public_pageToken( $userId );
+        $user->save();
+        dd($user);
     }
 }

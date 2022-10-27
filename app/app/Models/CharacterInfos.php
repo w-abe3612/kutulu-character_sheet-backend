@@ -14,15 +14,7 @@ class CharacterInfos extends Model
         'user_id',
         'player_name',
         'player_character',
-        'character_title',
-        'injury_value',
         'image_path',
-        'ability_value_max',
-        'ability_value_total',
-        'specialized_skill_max',
-        'specialized_skill_total',
-        'possession_item',
-        'character_preference',
         'delete_flg',
     ];
 }

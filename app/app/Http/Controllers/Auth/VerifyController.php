@@ -33,7 +33,6 @@ class VerifyController extends AuthController
         // event
         event(new Registered($user));
         return response()->json([],201);
-
     }
 
     /**
@@ -49,7 +48,6 @@ class VerifyController extends AuthController
 
         // 取得できた場合は仮登録データを削除
         if ($registerUser) {
-
             RegisterUser::destroy($registerUser->email);
         }
 
@@ -71,6 +69,9 @@ class VerifyController extends AuthController
             'email_verified_at' => now(),
             'password' => $data['password'],
         ]);
+        $userId = $user->id;
+        $user->public_page_token = $this->public_pageToken( $userId );
+        $user->save();
 
         return $user;
     }

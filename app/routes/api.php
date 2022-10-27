@@ -12,6 +12,7 @@ use App\Http\Controllers\CharacterSheetController;
 use App\Http\Controllers\FlavorInfosController;
 use App\Http\Controllers\SpecialzedSkillsController;
 use App\Http\Controllers\AbilityValuesController;
+use App\Http\Controllers\KutuluInfoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,14 +75,15 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
     
     // キャラクター情報取得
     Route::get('/v1/character_infos/', [CharacterSheetController::class, 'show']);
+    Route::get('/v1/specialzed_skills/', [SpecialzedSkillsController::class, 'show']);
     Route::get('/v1/flavor_infos/', [FlavorInfosController::class, 'show']);
     Route::get('/v1/ability_values/', [AbilityValuesController::class, 'show']);
-    Route::get('/v1/specialzed_skills/', [SpecialzedSkillsController::class, 'show']);
+    Route::get('/v1/kutulu_info/', [KutuluInfoController::class, 'show']);
 
     // create キャラクター
     Route::post('/v1/character/create/', [CharacterSheetController::class, 'create']);
     // put キャラクター更新
-    // Route::put('/v1/character/edit/{character_id}', [CharacterSheetController::class, 'edit']);
+    // Route::post('/v1/character/edit/', [CharacterSheetController::class, 'edit']);
     // delete キャラクター削除
     Route::post('/v1/character/delete/', [CharacterSheetController::class, 'delete']);
 
