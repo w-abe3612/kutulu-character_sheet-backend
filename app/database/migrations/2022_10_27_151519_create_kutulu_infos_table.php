@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKutuluInfoTable extends Migration
+class CreateKutuluInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateKutuluInfoTable extends Migration
      */
     public function up()
     {
-        Schema::create('KutuluInfo', function (Blueprint $table) {
+        Schema::create('kutulu_infos', function (Blueprint $table) {
             $table->id();
 
             //キャラクターID
@@ -51,6 +51,6 @@ class CreateKutuluInfoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('KutuluInfo');
+        Schema::dropIfExists('kutulu_infos');
     }
 }

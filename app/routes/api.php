@@ -9,10 +9,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyController;
 
 use App\Http\Controllers\CharacterSheetController;
-use App\Http\Controllers\FlavorInfosController;
-use App\Http\Controllers\SpecialzedSkillsController;
-use App\Http\Controllers\AbilityValuesController;
-use App\Http\Controllers\KutuluInfoController;
+use App\Http\Controllers\Kutulu\FlavorInfosController;
+use App\Http\Controllers\Kutulu\KutuluInfoController;
+use App\Http\Controllers\Kutulu\AbilityValuesController;
+use App\Http\Controllers\Kutulu\SpecialzedSkillsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,7 +83,7 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
     // create キャラクター
     Route::post('/v1/character/create/', [CharacterSheetController::class, 'create']);
     // put キャラクター更新
-    // Route::post('/v1/character/edit/', [CharacterSheetController::class, 'edit']);
+    Route::post('/v1/character/edit/', [CharacterSheetController::class, 'update']);
     // delete キャラクター削除
     Route::post('/v1/character/delete/', [CharacterSheetController::class, 'delete']);
 

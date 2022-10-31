@@ -79,7 +79,6 @@ class RegisterController extends AuthController
     private function sendVerificationMail(RegisterUser $registerUser)
     {
         Mail::to($registerUser->email)
-            // ->send(new VerificationMail($registerUser->token));
             ->queue(new VerificationMail($registerUser->token));
     }
 }

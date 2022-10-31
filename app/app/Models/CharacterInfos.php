@@ -15,6 +15,7 @@ class CharacterInfos extends Model
         'player_name',
         'player_character',
         'image_path',
-        'delete_flg',
+        'image_name',
+        'public_flg',
     ];
 }
