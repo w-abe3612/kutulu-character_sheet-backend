@@ -27,7 +27,7 @@ class CharacterSheetController extends Controller
         $result = [];
         $result = CharacterInfos::where('user_id', Auth::id() )
                     ->where('delete_flg','<>', '1')
-                    ->get();
+                    ->get(['id','image_name','image_path','player_character','public_page_token','updated_at']);
 
         return $result
             ? response()->json($result, 201)
@@ -67,7 +67,13 @@ class CharacterSheetController extends Controller
         $charactorInfo          = CharacterInfos::create( $requestInfo );
         $character_id           = $charactorInfo->id;
 
+        // 公開画面表示時にidを秘匿する為のハッシュを作成
+        $charactorInfo->public_page_token = $this->public_pageToken( $character_id );
+        
         // ここら辺に画像の保存機能がつく
+        $charactorInfo->image_name = ''; // s3へ送信後にパスを保存
+        $charactorInfo->image_path = ''; // s3へ送信後にファイル名保存
+        $charactorInfo->save();
 
         KutuluInfoController::create($request->kutuluInfo[0], $character_id);
         AbilityValuesController::create($request->abilityValues, $character_id);
@@ -86,6 +92,7 @@ class CharacterSheetController extends Controller
      */
     public function update(Request $request)
     {
+        // todo エラー時にエラー文を返す機能
         $character_id = $request->characterId;
         $requestCharacterInfo = $request->characterInfo[0];
         $characterInfo = CharacterInfos::where('id', $character_id)
@@ -95,9 +102,10 @@ class CharacterSheetController extends Controller
 
         $characterInfo->player_character = $requestCharacterInfo['player_character'];
         $characterInfo->player_name      = $requestCharacterInfo['player_name'];
+
         $characterInfo->update();
 
-        // ここら辺に画像の保存機能がつく
+        // todo ここら辺にbase64で送信された画像をs3へ画像を保存して、urlパスと画像名をDBへ挿入するロジックを作成
 
         KutuluInfoController::edit($request->kutuluInfo[0],$character_id);
         AbilityValuesController::edit($request->abilityValues,$character_id);
@@ -179,5 +187,18 @@ class CharacterSheetController extends Controller
             Log::error($e);
             return null;
         }
+    }
+
+    /**
+     * 公開用のURLの生成の際にidを隠す為のトークンの作成
+     * @return string
+     */
+    public function public_pageToken( $something_id = 0 )
+    {
+        $result = '';
+        if ( !empty($something_id) ) {
+            $result = hash_hmac('sha256', $something_id, config('app.public_page_creating_key'));
+        }
+        return $result;
     }
 }

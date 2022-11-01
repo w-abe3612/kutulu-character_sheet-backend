@@ -109,7 +109,6 @@ class SpecialzedSkillsSeeder extends Seeder
     ];
 
 
-    // todo 挿入用のロジックを作成
 
     /**
      * Run the database seeds.

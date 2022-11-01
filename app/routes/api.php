@@ -54,12 +54,14 @@ Route::get('/v1/user/', function () {
     $result = array(
         'id'  => null,
         'name'=> '',
+        'public_page_token' => '',
     );
 
     if ( Auth::check() ) {
         $result = array(
             'id' => Auth::user()->id,
             'name' => Auth::user()->name,
+            'public_page_token' => Auth::user()->public_page_token,
         );
     } 
 

@@ -11,11 +11,8 @@ class CharacterInfos extends Model
     use HasFactory;
 
     protected $fillable = [
+        'character_info_id',
         'user_id',
-        'player_name',
-        'player_character',
-        'image_path',
-        'image_name',
-        'public_flg',
+        'public_page_token'
     ];
 }
