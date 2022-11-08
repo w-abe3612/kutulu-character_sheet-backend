@@ -25,20 +25,6 @@ use App\Http\Controllers\Kutulu\SpecialzedSkillsController;
 |
 */
 
-/*
-↓これにログイン時のみで使うapiを入れる
-Route::group(['middleware' => 'auth:sanctum'] , function(){
-});
-*/
-
-// get view公開用の画面用API
-
-
-// get キャラクターIDに紐づくキャラクター情報
-//Route::get('/v1/character/{user_id}/view/{character_id}/', [CharacterSheetController::class, 'show']);
-
-// 
-
 // ユーザー仮登録
 Route::post('/v1/registration/', [RegisterController::class, 'register']);
 
@@ -88,5 +74,4 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
     Route::post('/v1/character/edit/', [CharacterSheetController::class, 'update']);
     // delete キャラクター削除
     Route::post('/v1/character/delete/', [CharacterSheetController::class, 'delete']);
-
 });
