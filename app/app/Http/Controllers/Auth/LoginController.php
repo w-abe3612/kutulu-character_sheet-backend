@@ -32,8 +32,13 @@ final class LoginController extends AuthController
  
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $result = array(
+                'id' => Auth::user()->id,
+                'name' => Auth::user()->name,
+                'public_page_token' => Auth::user()->public_page_token,
+            );
  
-            return response()->json(Auth::user(),201);
+            return response()->json( $result ,201);
         }
 
         return response()->json([], 401);

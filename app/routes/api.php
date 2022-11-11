@@ -75,3 +75,21 @@ Route::group(['middleware' => 'auth:sanctum'] , function() {
     // delete キャラクター削除
     Route::post('/v1/character/delete/', [CharacterSheetController::class, 'delete']);
 });
+
+// テスト用
+
+// 読み込み遅延系
+
+// キャラクター情報取得
+Route::get('/v1/test/delay/character_infos/', function () {
+    sleep(10);
+    return response()->json([], 200);
+});
+
+// 失敗系
+
+// キャラクター情報取得
+Route::get('/v1/test/failure/character_infos/', function () {
+    return response()->json([], 500);
+});
+
