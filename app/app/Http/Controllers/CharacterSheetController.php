@@ -14,6 +14,7 @@ use App\Models\CharacterInfos;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CharacterSheetController extends Controller
 {
@@ -26,8 +27,9 @@ class CharacterSheetController extends Controller
     {
         $result = [];
         $result = CharacterInfos::where('user_id', Auth::id() )
+                    ->select('id','image_name','image_path','player_character','public_page_token','updated_at')
                     ->where('delete_flg','<>', '1')
-                    ->get(['id','image_name','image_path','player_character','public_page_token','updated_at']);
+                    ->paginate(10);
 
         return $result
             ? response()->json($result, 201)
@@ -131,6 +133,45 @@ class CharacterSheetController extends Controller
                     ->where('user_id', Auth::id() )
                     ->where('delete_flg','!=',true)
                     ->get();
+
+        return $result
+            ? response()->json($result, 201)
+            : response()->json([], 500);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view(Request $request)
+    {
+        $result = [];
+
+        // userのidを取得
+        // todo 一度で取得できる感じのロジックにする
+        $users = DB::table('users')
+            ->select('id as user_id')
+            ->where('public_page_token', $request->userPageToken )
+            ->first();
+
+        if ( !empty($users) ) {
+
+            $characterInfo = CharacterInfos::where('user_id', $users->user_id)
+                ->where('public_page_token',$request->characterPageToken)
+                ->where('delete_flg','!=',true)
+                ->first();
+
+            $result = !empty($characterInfo) 
+                ? array(
+                    "player_name" => $characterInfo->player_name,
+                    "player_character" => $characterInfo->player_character,
+                    "image_path" => $characterInfo->image_path,
+                    "image_name" => $characterInfo->image_name,
+                ): [];
+        }
+
 
         return $result
             ? response()->json($result, 201)

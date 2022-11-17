@@ -35,6 +35,14 @@ Route::post('/v1/verify/', [VerifyController::class, 'verify']);
 Route::post('/v1/login/',[LoginController::class, 'login']);
 Route::post('/v1/logout/',[LoginController::class, 'logout']);
 
+// キャラクター情報取得
+Route::get('/v1/other_user_info/view/', [KutuluInfoController::class, 'view']);
+Route::get('/v1/character_infos/view/', [CharacterSheetController::class, 'view']);
+Route::get('/v1/specialzed_skills/view/', [SpecialzedSkillsController::class, 'view']);
+Route::get('/v1/flavor_infos/view/', [FlavorInfosController::class, 'view']);
+Route::get('/v1/ability_values/view/', [AbilityValuesController::class, 'view']);
+Route::get('/v1/kutulu_info/view/', [KutuluInfoController::class, 'view']);
+
 // ログインチェック
 Route::get('/v1/user/', function () {
     $result = array(

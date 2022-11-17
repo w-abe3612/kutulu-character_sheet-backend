@@ -10,6 +10,7 @@ use App\Http\Requests\StoreSpecialzedSkillsRequest;
 use App\Http\Requests\UpdateSpecialzedSkillsRequest;
 use App\Models\SpecialzedSkills;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SpecialzedSkillsController extends Controller
 {
@@ -26,6 +27,40 @@ class SpecialzedSkillsController extends Controller
         $result = SpecialzedSkills::where('character_info_id', $request->character_id)
                     ->where('user_id', Auth::id() )
                     ->get();
+
+        return $result
+            ? response()->json($result, 201)
+            : response()->json([], 500);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view(Request $request)
+    {
+        $result = [];
+
+        // todo 一度で取得できる感じのロジックにする
+        $users = DB::table('users')
+            ->select('id as user_id')
+            ->where('public_page_token', $request->userPageToken )
+            ->first();
+        
+        $characterInfo = DB::table('character_infos')
+            ->select('id as character_id')
+            ->where('user_id', $users->user_id)
+            ->where('public_page_token', $request->characterPageToken)
+            ->where('delete_flg', '!=', true)
+            ->first();
+        
+        if ( !empty($users) && !empty($characterInfo) ) {
+            $result = SpecialzedSkills::where('character_info_id', $characterInfo->character_id)
+                ->where('user_id', $users->user_id )
+                ->get();
+        }
 
         return $result
             ? response()->json($result, 201)
