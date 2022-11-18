@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
-class CharacterInfos extends Model
+class CharacterImage extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'character_info_id',
         'user_id',
-        'player_character',
-        'player_name',
-        'public_page_token'
+        'image_name',
+        'image_path',
+        'current_flg'
     ];
 }

@@ -6,11 +6,13 @@ use App\Http\Controllers\Kutulu\KutuluInfoController;
 use App\Http\Controllers\Kutulu\FlavorInfosController;
 use App\Http\Controllers\Kutulu\AbilityValuesController;
 use App\Http\Controllers\Kutulu\SpecialzedSkillsController;
+use App\Http\Controllers\CharacterImageController;
 
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 use App\Models\CharacterInfos;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -64,25 +66,36 @@ class CharacterSheetController extends Controller
      */
     public function create(Request $request)
     {
+
         $requestInfo            = $request->characterInfo[ 0 ];
         $requestInfo['user_id'] = Auth::id();
-        $charactorInfo          = CharacterInfos::create( $requestInfo );
+        $charactorInfo          = CharacterInfos::create( array(
+                                    'user_id' => Auth::id(),
+                                    'player_character'=>$requestInfo['player_character'],
+                                    'player_name'=>$requestInfo['player_name']) );
         $character_id           = $charactorInfo->id;
 
         // 公開画面表示時にidを秘匿する為のハッシュを作成
-        $charactorInfo->public_page_token = $this->public_pageToken( $character_id );
-        
+        $charactorInfo->public_page_token = self::public_pageToken( $character_id );
+
         // ここら辺に画像の保存機能がつく
-        $charactorInfo->image_name = ''; // s3へ送信後にパスを保存
-        $charactorInfo->image_path = ''; // s3へ送信後にファイル名保存
-        $charactorInfo->save();
+        // 1.もし引数にimg_upload_base64が存在し、base64の値が存在するなら
+        if ( !empty( $requestInfo['img_upload_base64'] ) ) {
+            $image_path = self::createPath();
+            $image_name = "";
+
+            $image_name = CharacterImageController::imageUpload ( $requestInfo['img_upload_base64'] , $character_id, 'create',$image_path);
+            $charactorInfo->image_name = $image_name;
+            $charactorInfo->image_path = $image_path;
+            $charactorInfo->save();
+        }
 
         KutuluInfoController::create($request->kutuluInfo[0], $character_id);
         AbilityValuesController::create($request->abilityValues, $character_id);
         FlavorInfosController::create($request->flavorInfo, $character_id);
         SpecialzedSkillsController::create($request->specializedSkill, $character_id);
 
-        return response()->json([], 201);
+        return response()->json($request, 201);
     }
 
     /**
@@ -107,14 +120,22 @@ class CharacterSheetController extends Controller
 
         $characterInfo->update();
 
-        // todo ここら辺にbase64で送信された画像をs3へ画像を保存して、urlパスと画像名をDBへ挿入するロジックを作成
+        if ( !empty( $requestCharacterInfo['img_upload_base64'] ) ) {
+            $image_path = self::createPath();
+            $image_name = "";
+
+            $image_name = CharacterImageController::imageUpload ( $requestCharacterInfo['img_upload_base64'] , $character_id, 'update',$image_path);
+            $charactorInfo->image_name = $image_name;
+            $charactorInfo->image_path = $image_path;
+            $charactorInfo->save();
+        }
 
         KutuluInfoController::edit($request->kutuluInfo[0],$character_id);
         AbilityValuesController::edit($request->abilityValues,$character_id);
         FlavorInfosController::edit($request->flavorInfo,$character_id);
         SpecialzedSkillsController::edit($request->specializedSkill,$character_id);
 
-        return response()->json([], 201);
+        return response()->json($requestInfo, 201);
 
         return response()->json($characterInfo->update(), 201);
     }
@@ -201,36 +222,6 @@ class CharacterSheetController extends Controller
     }
 
     /**
-     * 画像をデコードして、保存する
-     *
-     * @param  TaskRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function storeImage($base64Context, $storage, $dir)
-    {
-        try {
-            preg_match('/data:image\/(\w+);base64,/', $base64Context, $matches);
-            $extension = $matches[1];
-
-            $img = preg_replace('/^data:image.*base64,/', '', $base64Context);
-            $img = str_replace(' ', '+', $img);
-            $fileData = base64_decode($img);
-
-            $dir = rtrim($dir, '/').'/';
-            $fileName = md5($img);
-            $path = $dir.$fileName.'.'.$extension;
-
-            Storage::disk($storage)->put($path, $fileData);
-
-            return $path;
-
-        } catch (Exception $e) {
-            Log::error($e);
-            return null;
-        }
-    }
-
-    /**
      * 公開用のURLの生成の際にidを隠す為のトークンの作成
      * @return string
      */
@@ -241,5 +232,14 @@ class CharacterSheetController extends Controller
             $result = hash_hmac('sha256', $something_id, config('app.public_page_creating_key'));
         }
         return $result;
+    }
+
+    /**
+     * 公開用のURLの生成の際にidを隠す為のトークンの作成
+     * @return string
+     */
+    protected function createPath()
+    {
+        return '/images/'.date('Y/m').'/';
     }
 }
