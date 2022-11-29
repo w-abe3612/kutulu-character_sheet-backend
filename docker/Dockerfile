@@ -15,5 +15,7 @@ libpng-dev \
 libpq-dev \
 && docker-php-ext-install pdo_mysql mysqli && a2enmod rewrite
 
+RUN docker-php-ext-install bcmath
+
 # a2enmod rewriteっていうの入れないとapiがルーティングできない
 RUN sed -i 's!/var/www/html!/var/www/app/public!g' /etc/apache2/sites-available/000-default.conf

@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
+use Torann\Hashids\Facade\Hashids;
+
 class CharacterSheetController extends Controller
 {
     /**
@@ -77,6 +79,7 @@ class CharacterSheetController extends Controller
 
         // 公開画面表示時にidを秘匿する為のハッシュを作成
         $charactorInfo->public_page_token = self::public_pageToken( $character_id );
+        $charactorInfo->save();
 
         // ここら辺に画像の保存機能がつく
         // 1.もし引数にimg_upload_base64が存在し、base64の値が存在するなら
@@ -134,8 +137,6 @@ class CharacterSheetController extends Controller
         AbilityValuesController::edit($request->abilityValues,$character_id);
         FlavorInfosController::edit($request->flavorInfo,$character_id);
         SpecialzedSkillsController::edit($request->specializedSkill,$character_id);
-
-        return response()->json($requestInfo, 201);
 
         return response()->json($characterInfo->update(), 201);
     }
@@ -228,8 +229,9 @@ class CharacterSheetController extends Controller
     public function public_pageToken( $something_id = 0 )
     {
         $result = '';
+
         if ( !empty($something_id) ) {
-            $result = hash_hmac('sha256', $something_id, config('app.public_page_creating_key'));
+            $result = Hashids::encode($something_id);
         }
         return $result;
     }

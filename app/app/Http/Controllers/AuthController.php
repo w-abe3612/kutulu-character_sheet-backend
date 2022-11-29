@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rules\Password;
+use Torann\Hashids\Facade\Hashids;
 
 class AuthController extends Controller
 {
@@ -61,8 +62,9 @@ class AuthController extends Controller
     public function public_pageToken( $something_id = 0 )
     {
         $result = '';
+
         if ( !empty($something_id) ) {
-            $result = hash_hmac('sha256', $something_id, config('app.public_page_creating_key'));
+            $result = Hashids::encode($something_id);
         }
         return $result;
     }
