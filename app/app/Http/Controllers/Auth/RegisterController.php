@@ -8,6 +8,7 @@ use \Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\RegisterUser;
 use App\Mail\VerificationMail;
+use Arcanedev\NoCaptcha\NoCaptchaV2;
 
 class RegisterController extends AuthController
 {
@@ -21,7 +22,13 @@ class RegisterController extends AuthController
      */
     public function register(Request $request)
     {
+        $captcha = new NoCaptchaV2(env('RECAPTCHAV3_SECRET', 'no-captcha-secret'), env('RECAPTCHAV3_SITEKEY', 'no-captcha-sitekey'));
+        $response = $captcha->verify(!empty( $request->reCaptureToken ) ? $request->reCaptureToken: '');
 
+        if (!$response->isSuccess()) {
+            return response()->json([], 401);
+        }
+        
         // validation
         $this->validateRegister($request);
 

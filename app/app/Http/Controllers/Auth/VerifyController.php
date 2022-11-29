@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use App\Models\RegisterUser;
 use App\Models\User;
+use Arcanedev\NoCaptcha\NoCaptchaV2;
 
 class VerifyController extends AuthController
 {
@@ -19,6 +20,13 @@ class VerifyController extends AuthController
      */
     public function verify(Request $request)
     {
+        $captcha = new NoCaptchaV2(env('RECAPTCHAV3_SECRET', 'no-captcha-secret'), env('RECAPTCHAV3_SITEKEY', 'no-captcha-sitekey'));
+        $response = $captcha->verify(!empty( $request->reCaptureToken ) ? $request->reCaptureToken: '');
+
+        if (!$response->isSuccess()) {
+            return response()->json([], 401);
+        }
+
         // 仮登録のデータをトークンで取得
         $registerUser = $this->getRegisterUser($request->token);
 

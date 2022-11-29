@@ -4,8 +4,204 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cd07109e3c60c6092c7fb56ade78b52",
+    "content-hash": "2d3ec616c196711131d5302d88c6bde4",
     "packages": [
+        {
+            "name": "arcanedev/no-captcha",
+            "version": "12.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ARCANEDEV/noCAPTCHA.git",
+                "reference": "b2df8b5eaf17510d4d18099302763049345c4f9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ARCANEDEV/noCAPTCHA/zipball/b2df8b5eaf17510d4d18099302763049345c4f9d",
+                "reference": "b2df8b5eaf17510d4d18099302763049345c4f9d",
+                "shasum": ""
+            },
+            "require": {
+                "arcanedev/php-html": "^5.0",
+                "arcanedev/support": "^8.0",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^7.3|^8.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.4",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "12.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Arcanedev\\NoCaptcha\\NoCaptchaServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Arcanedev\\NoCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ARCANEDEV",
+                    "email": "arcanedev.maroc@gmail.com",
+                    "homepage": "https://github.com/arcanedev-maroc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "No CAPTCHA (new Google reCAPTCHA) with Laravel support",
+            "homepage": "https://github.com/ARCANEDEV/noCAPTCHA",
+            "keywords": [
+                "arcanedev",
+                "captcha",
+                "google",
+                "laravel",
+                "no-captcha",
+                "recaptcha"
+            ],
+            "support": {
+                "issues": "https://github.com/ARCANEDEV/noCAPTCHA/issues",
+                "source": "https://github.com/ARCANEDEV/noCAPTCHA/tree/12.2.0"
+            },
+            "time": "2020-12-18T10:56:40+00:00"
+        },
+        {
+            "name": "arcanedev/php-html",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ARCANEDEV/php-html.git",
+                "reference": "51e851c5029dffebcc012238056b172779428828"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ARCANEDEV/php-html/zipball/51e851c5029dffebcc012238056b172779428828",
+                "reference": "51e851c5029dffebcc012238056b172779428828",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "phpunit/phpunit": "^9.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Arcanedev\\Html\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ARCANEDEV",
+                    "email": "arcanedev.maroc@gmail.com",
+                    "homepage": "https://github.com/arcanedev-maroc",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple way to create html tags with php.",
+            "homepage": "https://github.com/ARCANEDEV/php-html",
+            "keywords": [
+                "arcanedev",
+                "form",
+                "html",
+                "tags"
+            ],
+            "support": {
+                "issues": "https://github.com/ARCANEDEV/php-html/issues",
+                "source": "https://github.com/ARCANEDEV/php-html/tree/5.0.1"
+            },
+            "time": "2020-11-30T16:53:55+00:00"
+        },
+        {
+            "name": "arcanedev/support",
+            "version": "8.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ARCANEDEV/Support.git",
+                "reference": "b161c3c080b314e832410295011625721fbd3a2f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ARCANEDEV/Support/zipball/b161c3c080b314e832410295011625721fbd3a2f",
+                "reference": "b161c3c080b314e832410295011625721fbd3a2f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^8.0",
+                "illuminate/support": "^8.0",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "laravel/framework": "^8.0",
+                "orchestra/testbench": "^6.0",
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "helpers.php"
+                ],
+                "psr-4": {
+                    "Arcanedev\\Support\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ARCANEDEV",
+                    "email": "arcanedev.maroc@gmail.com",
+                    "homepage": "https://github.com/arcanedev-maroc"
+                }
+            ],
+            "description": "ARCANEDEV Support Helpers",
+            "homepage": "https://github.com/ARCANEDEV/Support",
+            "keywords": [
+                "arcanedev",
+                "arcanesoft",
+                "laravel",
+                "support"
+            ],
+            "support": {
+                "issues": "https://github.com/ARCANEDEV/Support/issues",
+                "source": "https://github.com/ARCANEDEV/Support/tree/8.1.0"
+            },
+            "time": "2020-11-27T17:09:38+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.1.1",

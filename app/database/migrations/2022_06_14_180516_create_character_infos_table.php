@@ -26,6 +26,8 @@ class CreateCharacterInfosTable extends Migration
             $table->string('image_path',255 )->default('');
             //画像名
             $table->string('image_name',255 )->default('');
+            //
+            $table->integer('character_type')->default(0);
             //公開フラグ
             $table->boolean('public_flg')->default(true);
             //公開ページ用トークン

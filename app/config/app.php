@@ -164,6 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Torann\Hashids\HashidsServiceProvider::class,
+        Arcanedev\NoCaptcha\NoCaptchaServiceProvider::class,
 
         /*
          * Package Service Providers...
