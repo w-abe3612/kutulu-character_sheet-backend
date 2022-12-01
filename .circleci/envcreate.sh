@@ -1,7 +1,6 @@
 #!/bin/sh
  
 FILE=".test"
-cd ./app
  
 if [ -e $FILE ]; then
   rm FILE
