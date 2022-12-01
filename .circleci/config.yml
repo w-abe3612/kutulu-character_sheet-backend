@@ -14,7 +14,6 @@ jobs:
             ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd kutulu-character_sheet-backend && \
               git pull origin main && \
               touch .env && \
-              sh ./shell/envcreate.sh && \
               docker-compose -f docker-compose.prod.yml down -v && \
               docker-compose -f docker-compose.prod.yml up -d --build"
 workflows:
