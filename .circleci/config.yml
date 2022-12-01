@@ -11,7 +11,7 @@ jobs:
       - run:
           name: deploy
           command: |
-            ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd laravel-ci && \
-              git pull origin master && \
+            ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd kutulu-character_sheet-backend && \
+              git pull origin main && \
               docker-compose -f docker-compose.prod.yml down -v && \
               docker-compose -f docker-compose.prod.yml up -d --build"
