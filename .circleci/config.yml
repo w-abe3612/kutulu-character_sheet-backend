@@ -16,8 +16,8 @@ jobs:
               touch .env && \
               docker-compose -f docker-compose.prod.yml down -v && \
               docker-compose -f docker-compose.prod.yml up -d --build"
+      - run: "cd kutulu-character_sheet-backend/shell/"
       - run: "ls -la"
-      - run: "cd ./.circleci"
       - run: "sh envcreate.sh"
       - run: echo "end steps"
 workflows:
