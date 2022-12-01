@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     steps:
-      - run: echo "Hello Worlds"
+    - run: echo "Hello Worlds"
   deploy:
     steps:
       - add_ssh_keys
