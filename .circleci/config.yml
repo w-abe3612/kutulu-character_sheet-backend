@@ -17,7 +17,8 @@ jobs:
               docker-compose -f docker-compose.prod.yml down -v && \
               docker-compose -f docker-compose.prod.yml up -d --build"
       - run: "ls -la"
-      - run: sh ./.circleci/envcreate.sh
+      - run: "cd ./.circleci"
+      - run: "sh envcreate.sh"
       - run: echo "end steps"
 workflows:
   version: 2
