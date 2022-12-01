@@ -5,7 +5,7 @@ services:
       context: ./docker
       dockerfile: Dockerfile.prod
     ports:
-      - 81:81
+      - 80:80
     env_file: .env
     volumes:
       - ./app:/var/www/app
