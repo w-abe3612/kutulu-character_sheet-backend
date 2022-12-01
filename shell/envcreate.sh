@@ -1,1 +1,1 @@
-echo "test shell"
+echo ${HOST_NAME}
