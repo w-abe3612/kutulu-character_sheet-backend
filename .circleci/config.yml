@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     steps:
-    - run: echo "Hello Worlds"
+      - run: echo "Hello Worlds"
   deploy:
     steps:
       - add_ssh_keys
@@ -10,7 +10,7 @@ jobs:
       name: deploy
       command: |
         ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd kutulu-character_sheet-backend && \
-              git pull origin main && \
-              docker-compose -f docker-compose.prod.yml down -v && \
-              docker-compose -f docker-compose.prod.yml up -d --build && \
+          git pull origin main && \
+          docker-compose -f docker-compose.prod.yml down -v && \
+          docker-compose -f docker-compose.prod.yml up -d --build && \
               
