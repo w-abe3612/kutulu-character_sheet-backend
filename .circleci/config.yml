@@ -15,10 +15,8 @@ jobs:
               git pull origin main && \
               touch .env && \
               docker-compose -f docker-compose.prod.yml down -v && \
-              docker-compose -f docker-compose.prod.yml up -d --build"
-      - run: "cd kutulu-character_sheet-backend/shell/"
-      - run: "ls -la"
-      - run: "sh envcreate.sh"
+              docker-compose -f docker-compose.prod.yml up -d --build && \
+              cd shell && \ sh envcreate.sh"
       - run: echo "end steps"
 workflows:
   version: 2
