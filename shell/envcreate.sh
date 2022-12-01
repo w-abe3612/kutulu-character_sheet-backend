@@ -1,1 +1,0 @@
-echo "${HOST_NAME}"
