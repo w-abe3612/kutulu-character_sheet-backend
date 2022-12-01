@@ -1,23 +1,17 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      - image: circleci/classic:edge
+    machine: true
     steps:
       - run: echo "Hello World"
   deploy:
+    machine: true
     steps:
       - add_ssh_keys
       - run:
-        name: Install Docker Compose
-        command: |
-          curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-          chmod +x ~/docker-compose
-          sudo mv ~/docker-compose /usr/local/bin/docker-compose
-      - run:
-        name: deploy
-        command: |
-          ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd kutulu-character_sheet-backend && \
-              git pull origin main && \
+          name: deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd laravel-ci && \
+              git pull origin master && \
               docker-compose -f docker-compose.prod.yml down -v && \
-              docker-compose -f docker-compose.prod.yml up -d --build
+              docker-compose -f docker-compose.prod.yml up -d --build"
