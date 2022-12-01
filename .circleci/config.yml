@@ -1,7 +1,17 @@
 version: 2.1
 jobs:
   build:
-    docker:
-      - image: circleci/php:7.3-node-browsers
+    machine: true
     steps:
-      - run: echo "Hello Worlds"
+      - run: echo "Hello World"
+  deploy:
+    machine: true
+    steps:
+      - add_ssh_keys
+      - run:
+          name: deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no -t webapp@${HOST_NAME} "cd laravel-ci && \
+              git pull origin master && \
+              docker-compose -f docker-compose.prod.yml down -v && \
+              docker-compose -f docker-compose.prod.yml up -d --build"
