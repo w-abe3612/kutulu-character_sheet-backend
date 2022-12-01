@@ -1,9 +1,3 @@
-#!/bin/sh
+#!/bin/bash
  
-FILE=".test"
- 
-if [ -e $FILE ]; then
-  rm FILE
-fi
-
-touch FILE
+echo "end steps"
