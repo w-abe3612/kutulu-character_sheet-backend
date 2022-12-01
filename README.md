@@ -1,9 +1,11 @@
 # Dockerイメージを作成
-$ docker-compose build --no-cache
+# ローカル
+docker-compose -f docker-compose.yml down -v
+docker-compose -f docker-compose.yml up -d --build
 
-# Dockerを起動
-# -d でバックグランド起動
-$ docker-compose up -d
+# 本番
+docker-compose -f docker-compose.prod.yml down -v
+docker-compose -f docker-compose.prod.yml up -d --build
 
 # 起動しているコンテナが表示される
 $ docker ps

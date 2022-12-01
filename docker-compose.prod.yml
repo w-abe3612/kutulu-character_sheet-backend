@@ -1,0 +1,12 @@
+version: '3'
+services:
+  charabako:
+    build: 
+      context: ./docker
+      dockerfile: Dockerfile.prod
+    ports:
+      - 81:81
+    env_file: .env
+    volumes:
+      - ./app:/var/www/app
+    working_dir: /var/www/app
