@@ -20,12 +20,14 @@ return [
 
     'allowed_methods' => ['GET, POST'],
 
-    'allowed_origins' => ['*'],
+    //'allowed_origins' => ['*'],
+    //['https://example.com', 'https://*.example.com']
+    'allowed_origins' => ['https://chara-bako.com','https://*.chara-bako.com'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
-    //'allowed_headers' => ['Accept, X-Requested-With, Origin, Content-Type'],
+    //'allowed_headers' => ['*'],
+    'allowed_headers' => ['Accept, X-Requested-With, Origin, Content-Type'],
 
     'exposed_headers' => [],
 
