@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateAbilityValuesRequest;
 use App\Models\AbilityValues;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\Kutulu\AbilityValuesService;
 
 class AbilityValuesController extends Controller
 {

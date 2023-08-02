@@ -1,5 +1,77 @@
 <?php
+namespace App\Services;
+use Illuminate\Http\Request;
+use App\Models\CharacterInfos;
 
+class CharacterSheetServices
+{
+    public function getCharacterSheetIndex ($auth_user_id = null) {
+        $result = [];
+        try{
+            $result = CharacterInfos::where('user_id', $auth_user_id )
+                ->select('id','image_name','image_path','player_character','public_page_token','updated_at')
+                ->paginate(10);
+        } catch (Throwable $th) {  
+            return $th;
+        }
+        return $result;
+    }
+
+    public function showCharacterSheet(Request $request)
+    {
+        $result = [];
+        try{
+            $result = CharacterInfos::where('id', $request->character_id)
+                ->where('user_id', Auth::id() )
+                ->where('delete_flg','!=',true)
+                ->get();
+
+        } catch (Throwable $th) {  
+            return $th;
+        }
+
+        return $result;
+    }
+
+
+    public function viewCharacterSheet(Request $request)
+    {
+        $result = [];
+        try{
+
+        // userのidを取得
+        // todo 一度で取得できる感じのロジックにする
+        $users = DB::table('users')
+            ->select('id as user_id')
+            ->where('public_page_token', $request->userPageToken )
+            ->first();
+
+        if ( !empty($users) ) {
+
+            $characterInfo = CharacterInfos::where('user_id', $users->user_id)
+                ->where('public_page_token',$request->characterPageToken)
+                ->where('delete_flg','!=',true)
+                ->first();
+
+            $result = !empty($characterInfo) 
+                ? array(
+                    "player_name" => $characterInfo->player_name,
+                    "player_character" => $characterInfo->player_character,
+                    "image_path" => $characterInfo->image_path,
+                    "image_name" => $characterInfo->image_name,
+                ): [];
+        }
+
+
+    } catch (Throwable $th) {  
+        return $th;
+    }
+
+    return $result;
+    }
+
+}
+/*
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Kutulu\KutuluInfoController;
@@ -22,11 +94,7 @@ use Torann\Hashids\Facade\Hashids;
 
 class CharacterSheetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         $result = [];
@@ -40,12 +108,7 @@ class CharacterSheetController extends Controller
             : response()->json([], 501);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TaskRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function store(Request $request)
     {
         $request->merge([
@@ -60,12 +123,7 @@ class CharacterSheetController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  TaskRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function create(Request $request)
     {
 
@@ -101,13 +159,7 @@ class CharacterSheetController extends Controller
         return response()->json($request, 201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request)
     {
         // todo エラー時にエラー文を返す機能
@@ -141,13 +193,7 @@ class CharacterSheetController extends Controller
         return response()->json($characterInfo->update(), 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $user_id
-     * @param  int  $character_id
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function show(Request $request)
     {
         $result = [];
@@ -161,12 +207,7 @@ class CharacterSheetController extends Controller
             : response()->json([], 500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
+
     public function view(Request $request)
     {
         $result = [];
@@ -200,12 +241,7 @@ class CharacterSheetController extends Controller
             : response()->json([], 500);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function delete(Request $request)
     {
         $target_chara = 
@@ -222,10 +258,7 @@ class CharacterSheetController extends Controller
                 : response()->json([], 500);
     }
 
-    /**
-     * 公開用のURLの生成の際にidを隠す為のトークンの作成
-     * @return string
-     */
+
     public function public_pageToken( $something_id = 0 )
     {
         $result = '';
@@ -236,12 +269,10 @@ class CharacterSheetController extends Controller
         return $result;
     }
 
-    /**
-     * 公開用のURLの生成の際にidを隠す為のトークンの作成
-     * @return string
-     */
+
     protected function createPath()
     {
         return '/images/'.date('Y/m').'/';
     }
 }
+*/

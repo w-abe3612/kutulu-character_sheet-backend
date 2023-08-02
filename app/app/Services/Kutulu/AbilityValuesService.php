@@ -1,7 +1,7 @@
 <?php
  
 namespace App\Services\Kutulu;
- 
+use App\Models\AbilityValues;
 /**
  * 
  */

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\KutuluInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\Kutulu\KutuluInfoService;
 
 class KutuluInfoController extends Controller
 {

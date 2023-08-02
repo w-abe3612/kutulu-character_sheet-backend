@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateFlavorInfosRequest;
 use App\Models\FlavorInfos;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\Kutulu\FlavorInfosService;
 
 class FlavorInfosController extends Controller
 

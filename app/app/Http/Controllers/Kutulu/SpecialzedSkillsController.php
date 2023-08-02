@@ -5,18 +5,22 @@ use App\Http\Controllers\Controller;
 
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use App\Models\SpecialzedSkills;
 use App\Http\Requests\StoreSpecialzedSkillsRequest;
 use App\Http\Requests\UpdateSpecialzedSkillsRequest;
-use App\Models\SpecialzedSkills;
+use App\Services\Kutulu\SpecialzedSkillsService;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SpecialzedSkillsController extends Controller
 {
- 
+    private $specialzedSkills;
+    function __construct(SpecialzedSkillsService $specialzedSkills) {
+        $this->specialzedSkills = $specialzedSkills;
+    }
     /**
-     * Display the specified resource.
+     * 
      *
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
@@ -24,12 +28,12 @@ class SpecialzedSkillsController extends Controller
     public function show(Request $request)
     {
         $result = [];
-        $result = SpecialzedSkills::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
+        $character_id = !empty($request->character_id )? $request->character_id :null;
+
+        $result = $this->specialzedSkills->getSpecialzedSkills($character_id, Auth::id());
 
         return $result
-            ? response()->json($result, 201)
+            ? response()->json($result, 200)
             : response()->json([], 500);
     }
 
@@ -42,28 +46,14 @@ class SpecialzedSkillsController extends Controller
     public function view(Request $request)
     {
         $result = [];
+        $userPageToken = !empty($request->userPageToken )? $request->userPageToken :null;
+        $characterPageToken = !empty($request->characterPageToken )? $request->characterPageToken :null;
+        $user_id = !empty($request->user_id)? $request->user_id :null;
 
-        // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
-        
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id)
-            ->where('public_page_token', $request->characterPageToken)
-            ->where('delete_flg', '!=', true)
-            ->first();
-        
-        if ( !empty($users) && !empty($characterInfo) ) {
-            $result = SpecialzedSkills::where('character_info_id', $characterInfo->character_id)
-                ->where('user_id', $users->user_id )
-                ->get();
-        }
+        $result = $this->specialzedSkills->getSpecialzedSkillsView($user_id, $characterPageToken, $characterPageToken);
 
         return $result
-            ? response()->json($result, 201)
+            ? response()->json($result, 200)
             : response()->json([], 500);
     }
 

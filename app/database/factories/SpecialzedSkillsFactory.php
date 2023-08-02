@@ -14,7 +14,12 @@ class SpecialzedSkillsFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'character_info_id' => 1,
+            'user_id' => 1,
+            'skill_name' =>  '人類学&民族学',
+            'skill_param' =>  'anthropology',
+            'skill_value' =>  0,
+            'skill_order' =>  0,
         ];
     }
 }
