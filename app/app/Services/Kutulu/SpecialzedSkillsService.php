@@ -11,7 +11,6 @@ class SpecialzedSkillsService
 {
     public function getSpecialzedSkills($character_id = null,$auth_user_id = null) {
         $result = [];
-
         try {
             if (!empty($character_id) && !empty($auth_user_id)) {
                 $result = SpecialzedSkills::where('character_info_id', $character_id)
@@ -22,7 +21,6 @@ class SpecialzedSkillsService
         } catch (Throwable $th) {  
             return $th;
         }
-
         return $result;
     }
 

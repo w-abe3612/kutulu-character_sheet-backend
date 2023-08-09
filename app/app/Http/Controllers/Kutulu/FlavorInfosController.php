@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Kutulu;
 use App\Http\Controllers\Controller;
-
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use App\Models\FlavorInfos;
 use App\Http\Requests\StoreFlavorInfosRequest;
 use App\Http\Requests\UpdateFlavorInfosRequest;
-use App\Models\FlavorInfos;
+use App\Services\Kutulu\FlavorInfosService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Services\Kutulu\FlavorInfosService;
 
 class FlavorInfosController extends Controller
-
 {
+    private $flavorInfosService;
+    function __construct(FlavorInfosService $flavorInfosService) {
+        $this->flavorInfosService = $flavorInfosService;
+    }
+
     /**
      * Display the specified resource.
      *
@@ -25,15 +27,13 @@ class FlavorInfosController extends Controller
     public function show(Request $request)
     {
         $result = [];
-        $result = FlavorInfos::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
-        return response()->json($result, 201);
-/*
+        $character_id = !empty($request->character_id )? $request->character_id :null;
+
+        $result = $this->flavorInfosService->getFlavorInfos($character_id, Auth::id());
+
         return $result
-            ? response()->json($result, 201)
-            : response()->json([], 501);
-*/
+            ? response()->json($result, 200)
+            : response()->json([], 500);
     }
 
     /**
@@ -44,29 +44,15 @@ class FlavorInfosController extends Controller
      */
     public function view(Request $request)
     {
-        $result = [];
+        $result = [];  
+        $userPageToken = !empty($request->userPageToken )? $request->userPageToken :null;
+        $characterPageToken = !empty($request->characterPageToken )? $request->characterPageToken :null;
+        $user_id = !empty($request->user_id)? $request->user_id :null;
 
-        // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
-        
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id)
-            ->where('public_page_token', $request->characterPageToken)
-            ->where('delete_flg', '!=', true)
-            ->first();
-
-        if ( !empty($users) && !empty($characterInfo) ) {
-            $result = FlavorInfos::where('character_info_id', $characterInfo->character_id)
-                    ->where('user_id', $users->user_id )
-                    ->get();
-        }
+        $result = $this->flavorInfosService->getFlavorInfosView($user_id, $characterPageToken, $characterPageToken);
 
         return $result
-            ? response()->json($result, 201)
+            ? response()->json($result, 200)
             : response()->json([], 500);
     }
 
@@ -77,6 +63,7 @@ class FlavorInfosController extends Controller
      * @param  int  $id
      * @return 
      */
+    /*
     public function create($create_request,$character_id)
     {
         $result = '';
@@ -95,7 +82,7 @@ class FlavorInfosController extends Controller
         }
  
         return $result;
-    }
+    }*/
 
     /**
      * FlavorInfoを更新するコントローラー
@@ -104,6 +91,7 @@ class FlavorInfosController extends Controller
      * @param  int  $id
      * @return 
      */
+    /*
     public function edit($update_request,$character_id)
     {
         $result = '';
@@ -137,5 +125,5 @@ class FlavorInfosController extends Controller
         }
 
         return $result;
-    }
+    }*/
 }

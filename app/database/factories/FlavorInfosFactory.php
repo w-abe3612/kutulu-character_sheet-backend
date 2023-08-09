@@ -14,7 +14,12 @@ class FlavorInfosFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'character_info_id' => 1,
+            'user_id' => 1,
+            'flavor_info_param' =>  '', 
+            'flavor_info_name' => '',
+            'flavor_info_value' => '',
+            'flavor_info_order' => 0
         ];
     }
 }

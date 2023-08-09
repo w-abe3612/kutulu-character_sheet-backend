@@ -2,6 +2,9 @@
  
 namespace App\Services\Kutulu;
 use App\Models\FlavorInfos;
+use Illuminate\Support\Facades\DB;
+use Throwable;
+
 /**
  * 
  */
@@ -13,18 +16,18 @@ class FlavorInfosService
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request)
+    public function getFlavorInfos($character_id = null, $auth_user_id = null)
     {
         $result = [];
-        $result = FlavorInfos::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
-        return response()->json($result, 201);
-/*
-        return $result
-            ? response()->json($result, 201)
-            : response()->json([], 501);
-*/
+        try {
+            $result = FlavorInfos::where('character_info_id', $character_id)
+                ->where('user_id', $auth_user_id )
+                ->get();
+        } catch (Throwable $th) {  
+            return $th;
+        }
+
+        return $result;
     }
 
     /**
@@ -33,32 +36,31 @@ class FlavorInfosService
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function view(Request $request)
+    public function getFlavorInfosView($user_id =null, $userPageToken = null, $characterPageToken = null)
     {
         $result = [];
-
-        // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
+        try {
+            $users = DB::table('users')
+                ->select('id as user_id')
+                ->where('public_page_token', $userPageToken )
+                ->first();
         
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id)
-            ->where('public_page_token', $request->characterPageToken)
-            ->where('delete_flg', '!=', true)
-            ->first();
+            $characterInfo = DB::table('character_infos')
+                ->select('id as character_id')
+                ->where('user_id', $user_id)
+                ->where('public_page_token', $characterPageToken)
+                ->first();
 
-        if ( !empty($users) && !empty($characterInfo) ) {
-            $result = FlavorInfos::where('character_info_id', $characterInfo->character_id)
-                    ->where('user_id', $users->user_id )
+            if ( !empty($users) && !empty($characterInfo) ) {
+                $result = FlavorInfos::where('character_info_id', $characterInfo->character_id)
+                    ->where('user_id', $user_id )
                     ->get();
+            }
+        } catch (Throwable $th) {  
+            return $th;
         }
 
-        return $result
-            ? response()->json($result, 201)
-            : response()->json([], 500);
+        return $result;
     }
 
     /**
@@ -130,3 +132,24 @@ class FlavorInfosService
         return $result;
     }
 }
+
+/*
+    public function getSpecialzedSkills($character_id = null,$auth_user_id = null) {
+        $result = [];
+
+        try {
+            if (!empty($character_id) && !empty($auth_user_id)) {
+                $result = SpecialzedSkills::where('character_info_id', $character_id)
+                ->where('user_id', $auth_user_id )
+                ->get();
+            }
+
+        } catch (Throwable $th) {  
+            return $th;
+        }
+
+        return $result;
+    }
+
+    public function getSpecialzedSkillsView($user_id =null,$userPageToken = null,$characterPageToken = null) {
+*/
