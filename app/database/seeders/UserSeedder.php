@@ -27,6 +27,7 @@ class UserSeedder extends Seeder
                 'email' => 'abe@test.com',
                 'email_verified_at' => now(),
                 'password' => \Hash::make('123456789'),
+                'public_page_token' => '',
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -35,6 +36,7 @@ class UserSeedder extends Seeder
                 'email' => 'yamada@test.com',
                 'email_verified_at' => now(),
                 'password' => \Hash::make('123456789'),
+                'public_page_token' => '',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

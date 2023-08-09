@@ -8,6 +8,7 @@ use App\Models\RegisterUser;
 use App\Models\CharacterInfos;
 use App\Http\Controllers\AuthController;
 use App\Models\SpecialzedSkills;
+use App\Services\AuthServices;
 
 class SpecialzedSkillsTest extends TestCase
 {
@@ -19,12 +20,6 @@ class SpecialzedSkillsTest extends TestCase
     }
 
     public function test_get_specialzed_skills() {
-
-        //$response = $this->getJson('/api/v1/specialzed_skills');
-        //dd($response);
-        //$response->assertStatus(401);
-        //$response->assertJson();
-        //$response->dump();
         $user = User::factory()->create();
 
         $this->actingAs( $user );
@@ -38,25 +33,27 @@ class SpecialzedSkillsTest extends TestCase
 
         $response = $this->getJson('/api/v1/specialzed_skills?character_id='.$characterInfos->id);
         $response->assertStatus(200);
-        /*
-        $response->assertStatus( 200 );
-        
+    }
 
+    public function test_get_specialzed_skills_view() {
         $user = User::factory()->create();
+        $user->public_page_token = AuthServices::public_pageToken( $user->id );
+        $user->save();
+        
         $this->actingAs( $user );
+        $characterInfos = CharacterInfos::factory()->create([
+            'user_id' => $user->id,
+        ]);
+        $characterInfos->public_page_token = AuthServices::public_pageToken( $user->id );
+        $characterInfos->save();
 
-
-        $response = $this->getJson('/api/tasks');
-        */
+        $specialzedSkills = SpecialzedSkills::factory()->create([
+            'user_id' => $user->id,
+            'character_info_id' => $characterInfos->id
+        ]);
+        //dd($characterInfos->public_page_token);
+        $response = $this->getJson('/api/v1/specialzed_skills/view/?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token);
+        
+       $response->assertStatus(200);
     }
-/*
-    public function VIEWページ用のデータ取得が可能() {
-
-        $data = [
-            'title' => ''
-        ];
-
-        $response = $this->getJson('/api/tasks',$data);
-    }
-    */
 }
