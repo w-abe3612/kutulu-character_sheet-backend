@@ -47,9 +47,8 @@ class FlavorInfosController extends Controller
         $result = [];  
         $userPageToken = !empty($request->userPageToken )? $request->userPageToken :null;
         $characterPageToken = !empty($request->characterPageToken )? $request->characterPageToken :null;
-        $user_id = !empty($request->user_id)? $request->user_id :null;
 
-        $result = $this->flavorInfosService->getFlavorInfosView($user_id, $characterPageToken, $characterPageToken);
+        $result = $this->flavorInfosService->getFlavorInfosView( $characterPageToken, $characterPageToken);
 
         return $result
             ? response()->json($result, 200)

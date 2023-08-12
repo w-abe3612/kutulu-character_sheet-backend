@@ -60,7 +60,7 @@ class FlavorInfosTest extends TestCase
             'flavor_info_order' => 0
         ]);
 
-        $response = $this->getJson('/api/v1/flavor_infos/view?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token.'&user_id='.$user->id);
+        $response = $this->getJson('/api/v1/flavor_infos/view?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token);
         
         $response->assertStatus(200);
     }

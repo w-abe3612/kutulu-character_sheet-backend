@@ -24,24 +24,24 @@ class SpecialzedSkillsService
         return $result;
     }
 
-    public function getSpecialzedSkillsView($user_id =null,$userPageToken = null,$characterPageToken = null) {
+    public function getSpecialzedSkillsView($userPageToken = null,$characterPageToken = null) {
         $result = [];
         try {
             // todo 一度で取得できる感じのロジックにする
-            $users = DB::table('users')
+            $user = DB::table('users')
                 ->select('id as user_id')
                 ->where('public_page_token', $userPageToken )
                 ->first();
         
             $characterInfo = DB::table('character_infos')
                 ->select('id as character_id')
-                ->where('user_id', $user_id)
+                ->where('user_id', $user->id)
                 ->where('public_page_token', $characterPageToken)
                 ->first();
         
-            if ( !empty($users) && !empty($characterInfo) ) {
+            if ( !empty($user) && !empty($characterInfo) ) {
                 $result = SpecialzedSkills::where('character_info_id', $characterInfo->character_id)
-                    ->where('user_id', $user_id )
+                    ->where('user_id', $user->id )
                     ->get();
             }
         } catch (Throwable $th) {  

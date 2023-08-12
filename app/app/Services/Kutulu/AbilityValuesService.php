@@ -2,41 +2,50 @@
  
 namespace App\Services\Kutulu;
 use App\Models\AbilityValues;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 /**
  * 
  */
 class AbilityValuesService
 {
-    public function show(Request $request)
+    public function getAbilityValues($character_id = null, $auth_user_id = null)
     {
         $result = [];
-        $result = AbilityValues::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
+        try {
+            $result = AbilityValues::where('character_info_id', $character_id)
+                ->where('user_id', $auth_user_id)
+                ->get();
+        } catch (Throwable $th) {  
+            return $th;
+        }
         return $result;
     }
 
-    public function view(Request $request)
+    public function getAbilityValuesView( $userPageToken = null, $characterPageToken = null)
     {
         $result = [];
 
         // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
+        try {
+            $user = DB::table('users')
+                ->select('id as user_id')
+                ->where('public_page_token', $userPageToken )
+                ->first();
         
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id )
-            ->where('public_page_token', $request->characterPageToken )
-            ->where('delete_flg', '!=', true)
-            ->first();
+            $characterInfo = DB::table('character_infos')
+                ->select('id as character_id')
+                ->where('user_id', $user->id )
+                ->where('public_page_token', $characterPageToken )
+                ->first();
 
-        if ( !empty($users) && !empty( $characterInfo ) ) {
-            $result = AbilityValues::where('character_info_id', $characterInfo->character_id)
-                ->where('user_id', $users->user_id )
-                ->get();
+            if ( !empty($user) && !empty( $characterInfo ) ) {
+                $result = AbilityValues::where('character_info_id', $characterInfo->character_id)
+                    ->where('user_id', $user->id )
+                    ->get();
+            }
+        } catch (Throwable $th) {  
+            return $th;
         }
 
         return $result;

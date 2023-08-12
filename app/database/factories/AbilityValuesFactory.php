@@ -15,7 +15,13 @@ class AbilityValuesFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'character_info_id' => 1,
+            'user_id'	        => 1,	
+            'skill_name'        => "名声",
+            'skill_param'       => "prestige",
+            'skill_value'       => 1,
+            'skill_type'        => 1,
+            'skill_order'       => 1,
         ];
     }
 }

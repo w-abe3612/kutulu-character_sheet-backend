@@ -50,7 +50,7 @@ class SpecialzedSkillsTest extends TestCase
             'user_id' => $user->id,
             'character_info_id' => $characterInfos->id
         ]);
-        $response = $this->getJson('/api/v1/specialzed_skills/view/?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token.'&user_id='.$user->id);
+        $response = $this->getJson('/api/v1/specialzed_skills/view/?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token);
 
         $response->assertStatus(200);
     }
