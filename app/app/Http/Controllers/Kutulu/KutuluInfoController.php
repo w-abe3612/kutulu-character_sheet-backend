@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 use App\Models\KutuluInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Services\Kutulu\KutuluInfoService;
+use App\Services\Kutulu\KutuluInfoService;
 
 class KutuluInfoController extends Controller
 {
+    private $kutuluInfo;
+    function __construct(KutuluInfoService $kutuluInfo) {
+        $this->kutuluInfo = $kutuluInfo;
+    }
     /**
      * Display the specified resource.
      *
@@ -22,12 +26,11 @@ class KutuluInfoController extends Controller
     public function show(Request $request)
     {
         $result = [];
-        $result = KutuluInfo::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
+        $character_id = !empty($request->character_id )? $request->character_id :null;
+        $result = $this->kutuluInfo->getKutuluInfo($character_id, Auth::id());
 
         return $result
-            ? response()->json($result, 201)
+            ? response()->json($result, 200)
             : response()->json([], 501);
     }
 
@@ -40,28 +43,13 @@ class KutuluInfoController extends Controller
     public function view(Request $request)
     {
         $result = [];
+        $userPageToken = !empty($request->userPageToken )? $request->userPageToken :null;
+        $characterPageToken = !empty($request->characterPageToken )? $request->characterPageToken :null;
 
-        // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
-        
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id)
-            ->where('public_page_token', $request->characterPageToken)
-            ->where('delete_flg', '!=', true)
-            ->first();
-
-        if ( !empty($users) && !empty($characterInfo) ) {
-            $result = KutuluInfo::where('character_info_id', $characterInfo->character_id)
-                ->where('user_id', $users->user_id )
-                ->get();
-        }
+        $result = $this->kutuluInfo->getKutuluInfoView($characterPageToken, $characterPageToken);
 
         return $result
-            ? response()->json($result, 201)
+            ? response()->json($result, 200)
             : response()->json([], 500);
     }
 

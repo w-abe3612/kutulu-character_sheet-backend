@@ -2,6 +2,8 @@
  
 namespace App\Services\Kutulu;
 use App\Models\KutuluInfo;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 /**
  * 
  */
@@ -13,16 +15,17 @@ class KutuluInfoService
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Request $request)
+    public function getKutuluInfo($character_id = null,$auth_user_id = null)
     {
         $result = [];
-        $result = KutuluInfo::where('character_info_id', $request->character_id)
-                    ->where('user_id', Auth::id() )
-                    ->get();
-
-        return $result
-            ? response()->json($result, 201)
-            : response()->json([], 501);
+        try {
+            $result = KutuluInfo::where('character_info_id', $character_id )
+                ->where('user_id', $auth_user_id )
+                ->get();
+        } catch (Throwable $th) {  
+            return $th;
+        }
+        return $result;
     }
 
     /**
@@ -31,32 +34,32 @@ class KutuluInfoService
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function view(Request $request)
+    public function getKutuluInfoView($userPageToken = null,$characterPageToken = null)
     {
         $result = [];
-
-        // todo 一度で取得できる感じのロジックにする
-        $users = DB::table('users')
-            ->select('id as user_id')
-            ->where('public_page_token', $request->userPageToken )
-            ->first();
+        try {
+            // todo 一度で取得できる感じのロジックにする
+            $user = DB::table('users')
+                ->select('id as user_id')
+                ->where('public_page_token', $userPageToken )
+                ->first();
         
-        $characterInfo = DB::table('character_infos')
-            ->select('id as character_id')
-            ->where('user_id', $users->user_id)
-            ->where('public_page_token', $request->characterPageToken)
-            ->where('delete_flg', '!=', true)
-            ->first();
+            $characterInfo = DB::table('character_infos')
+                ->select('id as character_id')
+                ->where('user_id', $user->id)
+                ->where('public_page_token', $characterPageToken)
+                ->first();
 
-        if ( !empty($users) && !empty($characterInfo) ) {
-            $result = KutuluInfo::where('character_info_id', $characterInfo->character_id)
-                ->where('user_id', $users->user_id )
-                ->get();
+            if ( !empty($user) && !empty($characterInfo) ) {
+                $result = KutuluInfo::where('character_info_id', $characterInfo->character_id)
+                    ->where('user_id', $user->id )
+                    ->get();
+            }
+        } catch (Throwable $th) {  
+            return $th;
         }
 
-        return $result
-            ? response()->json($result, 201)
-            : response()->json([], 500);
+        return $result;
     }
 
     /**

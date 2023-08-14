@@ -27,6 +27,11 @@ class KutuluInfoTest extends TestCase
             'user_id' => $user->id,
         ]);
 
+        $kutuluInfo = KutuluInfo::factory()->create([
+            'user_id' => $user->id,
+            'character_info_id' => $characterInfos->id
+        ]);
+
         $response = $this->getJson('/api/v1/kutulu_info/?character_id='.$characterInfos->id);
         $response->assertStatus(200);
     }
@@ -41,5 +46,14 @@ class KutuluInfoTest extends TestCase
         ]);
         $characterInfos->public_page_token = AuthServices::public_pageToken( $user->id );
         $characterInfos->save();
+
+        $kutuluInfo = KutuluInfo::factory()->create([
+            'user_id' => $user->id,
+            'character_info_id' => $characterInfos->id
+        ]);
+
+        $response = $this->getJson('/api/v1/kutulu_info/view/?userPageToken='.$user->public_page_token.'&characterPageToken='.$characterInfos->public_page_token);
+
+        $response->assertStatus(200);
     }
 }
